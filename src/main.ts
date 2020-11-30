@@ -24,7 +24,6 @@ async function bootstrap() {
     .setTitle('E-Budgeting Chaincode API')
     .setDescription('RESTful Chaincode E-Budgeting')
     .setVersion('1.0')
-    .addTag('chaincode')
     .setExternalDoc(
       'Github Repo',
       'https://github.com/atjhoendz/backend-chaincode-ebudgeting',
