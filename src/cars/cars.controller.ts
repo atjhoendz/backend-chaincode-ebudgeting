@@ -26,9 +26,9 @@ export class CarsController {
     return this.carsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.carsService.findOne(+id);
+  @Get(':carNumber')
+  findOne(@Param('carNumber') carNumber: string) {
+    return this.carsService.findOne(carNumber);
   }
 
   @Put(':id')

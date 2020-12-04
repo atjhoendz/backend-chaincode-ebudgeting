@@ -1,18 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { AppUtil } from 'src/core/chain/appUtil.service';
+import { HlfConfig } from 'src/core/chain/hlfConfig';
 import { CarsDto } from './cars.model';
 
 @Injectable()
 export class CarsService {
+  constructor(public hlfConfig: HlfConfig, public appUtil: AppUtil) {}
   create(carsDto: CarsDto) {
     return 'This action adds a new car';
   }
 
-  findAll() {
-    return `This action returns all cars`;
+  async findAll() {
+    const result = await this.hlfConfig.contract.evaluateTransaction(
+      'queryAllCars',
+    );
+    return this.appUtil.prettyJSONString(result);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} car`;
+  async findOne(carNumber: string) {
+    const result = await this.hlfConfig.contract.evaluateTransaction(
+      'queryCar',
+      carNumber,
+    );
+    return this.appUtil.prettyJSONString(result);
   }
 
   update(id: number, carsDto: CarsDto) {
