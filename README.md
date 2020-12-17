@@ -2,12 +2,24 @@
 
 ## Description
 
-Using NestJS Framework
+Backend service for e-budgeting with blockchain network using Nest JS and Hyperledger Fabric.
 
 ## Installation
 
 ```bash
 $ npm install
+```
+
+## Setup network
+
+```bash
+$ cd src/core
+
+# up
+$ ./startFabric.sh
+
+# down
+$ ./networkDown.sh
 ```
 
 ## Running the app
@@ -35,3 +47,7 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## API Docs
+
+> http://localhost:3000/docs
