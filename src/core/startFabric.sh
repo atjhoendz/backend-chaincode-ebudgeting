@@ -8,6 +8,7 @@ CC_SRC_LANGUAGE="typescript"
 CC_SRC_PATH="../chaincode/typescript"
 
 rm -rf ../common/config/wallet/*
+rm -rf ../../dist/common/config/wallet/*
 
 pushd network
 ./network.sh down

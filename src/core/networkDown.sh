@@ -8,3 +8,4 @@ popd
 
 # remove generated wallet
 rm -rf ../common/config/wallet/*
+rm -rf ../../dist/common/config/wallet/*
