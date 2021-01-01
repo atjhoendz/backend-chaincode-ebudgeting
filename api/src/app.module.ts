@@ -1,7 +1,7 @@
 import { Logger, Module } from '@nestjs/common';
 import { CarsModule } from './cars/cars.module';
-import { ChainModule } from './core/chain/chain.module';
-import { HlfConfig } from './core/chain/hlfConfig';
+import { ChainModule } from './chain/chain.module';
+import { HlfConfig } from './chain/hlfConfig';
 
 @Module({
   imports: [ChainModule, CarsModule, HlfConfig],

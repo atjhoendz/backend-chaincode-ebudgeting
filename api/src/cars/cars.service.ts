@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { AppUtil } from 'src/core/chain/appUtil.service';
-import { HlfConfig } from 'src/core/chain/hlfConfig';
+import { AppUtil } from 'src/chain/appUtil.service';
+import { HlfConfig } from 'src/chain/hlfConfig';
 import { CarsDto } from './cars.model';
 
 @Injectable()

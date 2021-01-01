@@ -1,9 +1,9 @@
 import { Logger, Module } from '@nestjs/common';
 import { Gateway } from 'fabric-network';
-import { Appconfig } from 'src/common/config/appconfig';
 import { CAUtil } from './caUtil.service';
 import { AppUtil } from './appUtil.service';
 import { HlfConfig } from './hlfConfig';
+import { Appconfig } from '../common/config/appconfig';
 
 @Module({
   providers: [CAUtil, AppUtil, HlfConfig],

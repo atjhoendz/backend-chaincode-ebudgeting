@@ -5,12 +5,12 @@ set -e
 starttime=$(date +%s)
 
 CC_SRC_LANGUAGE="typescript"
-CC_SRC_PATH="../chaincode/typescript"
+CC_SRC_PATH="../../chaincode"
 
-rm -rf ../common/config/wallet/*
-rm -rf ../../dist/common/config/wallet/*
+rm -rf ../api/src/common/config/wallet/*
+rm -rf ../api/dist/common/config/wallet/*
 
-pushd network
+pushd network-conf
 ./network.sh down
 ./network.sh up createChannel -ca -s couchdb
 ./network.sh deployCC -ccn fabcar -ccv 1 -cci initLedger -ccl ${CC_SRC_LANGUAGE} -ccp ${CC_SRC_PATH}
