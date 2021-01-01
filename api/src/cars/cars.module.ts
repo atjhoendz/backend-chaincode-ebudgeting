@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CarsController } from './cars.controller';
-import { HlfConfig } from 'src/chain/hlfConfig';
-import { ChainModule } from 'src/chain/chain.module';
+import { HlfConfig } from 'src/chaincode-service/hlfConfig';
+import { ChainModule } from 'src/chaincode-service/chain.module';
 
 @Module({
   controllers: [CarsController],
