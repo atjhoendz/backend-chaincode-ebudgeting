@@ -67,7 +67,7 @@ createChannel() {
 # queryCommitted ORG
 joinChannel() {
   ORG=$1
-  setGlobals $ORG
+  setGlobals $ORG $2
 	local rc=1
 	local COUNTER=1
 	## Sometimes Join takes time, hence retry
@@ -129,7 +129,10 @@ createChannel
 
 ## Join all the peers to the channel
 infoln "Join Org1 peers to the channel..."
-joinChannel 1
+infoln "Joining peer0.."
+joinChannel 1 0
+infoln "Joining peer1..."
+joinChannel 1 1
 infoln "Join Org2 peers to the channel..."
 joinChannel 2
 
