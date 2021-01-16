@@ -7,7 +7,7 @@ export const Appconfig: ConfigOptions = {
     walletPath: path.resolve(__dirname, 'wallet'),
     userId: 'admin',
     channelId: 'mychannel',
-    chaincodeId: 'fabcar',
+    chaincodeId: 'fabcarpeer0',
     networkUrl: `grpcs://${EnvConfig.PEER_HOST}:7051`,
     eventUrl: `grpcs://${EnvConfig.PEER_HOST}:7053`,
     ordererUrl: `grpcs://${EnvConfig.ORDERER_HOST}:7050`,
