@@ -292,7 +292,7 @@ chaincodeInvokeInit() {
   set -x
   fcn_call='{"function":"'${CC_INIT_FCN}'","Args":[]}'
   infoln "invoke fcn call:${fcn_call}"
-  peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} $PEER_CONN_PARMS --isInit -c ${fcn_call} >&log.txt
+  peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n "${CC_NAME}peer0" $PEER_CONN_PARMS --isInit -c ${fcn_call} >&log.txt
   res=$?
   { set +x; } 2>/dev/null
   cat log.txt
@@ -336,8 +336,8 @@ installChaincode 1 0
 infoln "Installing chaincode on peer1.org1..."
 installChaincode 1 1
 
-infoln "Install chaincode on peer0.org2..."
-installChaincode 2
+# infoln "Install chaincode on peer0.org2..."
+# installChaincode 2
 
 ## query whether the chaincode is installed
 infoln "Query to peer0.org1..."
@@ -348,39 +348,42 @@ queryInstalled 1 1
 
 ## approve the definition for org1
 approveForMyOrg 1 0
-approveForMyOrg 1 1
+# approveForMyOrg 1 1
 
 ## check whether the chaincode definition is ready to be committed
 ## expect org1 to have approved and org2 not to
-checkCommitReadiness 1 0 "\"Org1MSP\": true" "\"Org2MSP\": false"
-checkCommitReadiness 1 1 "\"Org1MSP\": true" "\"Org2MSP\": false"
-# checkCommitReadiness 1 "\"Org1MSP\": true" "\"Org2MSP\": false"
-checkCommitReadiness 2 "\"Org1MSP\": true" "\"Org2MSP\": false"
+checkCommitReadiness 1 0 "\"Org1MSP\": true"
+# checkCommitReadiness 1 1 "\"Org1MSP\": true"
+# checkCommitReadiness 1 0 "\"Org1MSP\": true" "\"Org2MSP\": false"
+# checkCommitReadiness 1 1 "\"Org1MSP\": true" "\"Org2MSP\": false"
+# checkCommitReadiness 2 "\"Org1MSP\": true" "\"Org2MSP\": false"
 
 ## now approve also for org2
-approveForMyOrg 2
+# approveForMyOrg 2
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved
-checkCommitReadiness 1 0 "\"Org1MSP\": true" "\"Org2MSP\": true"
-checkCommitReadiness 1 1 "\"Org1MSP\": true" "\"Org2MSP\": true"
+# checkCommitReadiness 1 0 "\"Org1MSP\": true" "\"Org2MSP\": true"
+# checkCommitReadiness 1 1 "\"Org1MSP\": true" "\"Org2MSP\": true"
 # checkCommitReadiness 1 "\"Org1MSP\": true" "\"Org2MSP\": true"
-checkCommitReadiness 2 "\"Org1MSP\": true" "\"Org2MSP\": true"
+# checkCommitReadiness 2 "\"Org1MSP\": true" "\"Org2MSP\": true"
 
 ## now that we know for sure both orgs have approved, commit the definition
-commitChaincodeDefinition 1 2
+# commitChaincodeDefinition 1 2
+commitChaincodeDefinition 1
 
 ## query on both orgs to see that the definition committed successfully
 queryCommitted 1 0
-queryCommitted 1 1
-queryCommitted 2
+# queryCommitted 1 1
+# queryCommitted 2
 
 ## Invoke the chaincode - this does require that the chaincode have the 'initLedger'
 ## method defined
 if [ "$CC_INIT_FCN" = "NA" ]; then
   infoln "Chaincode initialization is not required"
 else
-  chaincodeInvokeInit 1 2
+  # chaincodeInvokeInit 1 2
+  chaincodeInvokeInit 1
 fi
 
 exit 0

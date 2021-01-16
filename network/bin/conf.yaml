@@ -1,0 +1,10 @@
+version: 0
+tlsconfig:
+  certpath: ""
+  keypath: ""
+  peercacertpath: /home/atjhoendz/Programming/NodeJS/NestJS/backend-chaincode-ebudgeting/network/network-conf/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt
+  timeout: 0s
+signerconfig:
+  mspid: Org1MSP
+  identitypath: /home/atjhoendz/Programming/NodeJS/NestJS/backend-chaincode-ebudgeting/network/network-conf/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/signcerts/cert.pem
+  keypath: /home/atjhoendz/Programming/NodeJS/NestJS/backend-chaincode-ebudgeting/network/network-conf/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/keystore/9fc8dd8a785a9b50e930bf2060b8f52d238f5d432e16151a1dba4f3882bd80f3_sk
