@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import * as path from 'path';
 import * as fs from 'fs';
 import { Wallets } from 'fabric-network';
+import { Buffer } from 'buffer';
 
 @Injectable()
 export class AppUtil {
@@ -45,7 +46,11 @@ export class AppUtil {
 
   prettyJSONString(inputString: any) {
     if (inputString) {
-      return JSON.stringify(JSON.parse(inputString), null, 2);
+      try {
+        return JSON.stringify(JSON.parse(inputString), null, 2);
+      } catch (err) {
+        return Buffer.from(inputString).toString('utf8');
+      }
     } else {
       return inputString;
     }

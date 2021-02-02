@@ -11,14 +11,14 @@ export class CarsService {
   }
 
   async findAll() {
-    const result = await this.hlfConfig.contract.evaluateTransaction(
+    const result = await this.hlfConfig.contractFabcar.evaluateTransaction(
       'queryAllCars',
     );
     return this.appUtil.prettyJSONString(result);
   }
 
   async findOne(carNumber: string) {
-    const result = await this.hlfConfig.contract.evaluateTransaction(
+    const result = await this.hlfConfig.contractFabcar.evaluateTransaction(
       'queryCar',
       carNumber,
     );

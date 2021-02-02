@@ -8,5 +8,6 @@ export class HlfConfig {
   public caClient: FabricCAServices;
   public wallet: Wallet;
   public gateway: Gateway;
-  public contract: Contract;
+  public contractFabcar: Contract;
+  public contractUser: Contract;
 }
