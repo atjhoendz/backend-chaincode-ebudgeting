@@ -56,15 +56,26 @@ export class ChainModule {
           Appconfig.hlf.channelId,
         );
 
-        this.hlfConfig.contractFabcar = await network.getContract(
+        const fabcarContract = await network.getContract(
           Appconfig.hlf.chaincodeId,
           'FabCar',
         );
 
-        this.hlfConfig.contractUser = await network.getContract(
+        const userContract = await network.getContract(
           Appconfig.hlf.chaincodeId,
           'User',
         );
+
+        const provinsiContract = await network.getContract(
+          Appconfig.hlf.chaincodeId,
+          'Provinsi',
+        );
+
+        this.hlfConfig.contract = {
+          Fabcar: fabcarContract,
+          User: userContract,
+          Provinsi: provinsiContract,
+        };
 
         // const result = await this.hlfConfig.contract.evaluateTransaction(
         //   'queryAllCars',
