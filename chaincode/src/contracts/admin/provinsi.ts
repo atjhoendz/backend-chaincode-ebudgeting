@@ -15,33 +15,6 @@ export class Provinsi extends Contract {
     return "Data berhasil ditambahkan";
   }
 
-  public async getAllDefault(ctx: Context): Promise<string> {
-    const allResults = [];
-    const queryString = {
-      selector: {
-        docType: "provinsi",
-      },
-    };
-
-    for await (const { key, value } of ctx.stub.getQueryResult(
-      JSON.stringify(queryString)
-    )) {
-      const strValue = Buffer.from(value).toString("utf8");
-
-      let record;
-      try {
-        record = JSON.parse(strValue);
-      } catch (err) {
-        console.log(err);
-        record = strValue;
-      }
-
-      allResults.push({ Key: key, Record: record });
-    }
-
-    return JSON.stringify(allResults);
-  }
-
   public async getAll(ctx: Context): Promise<string> {
     const qs = queryString({ docType: "provinsi" });
 
