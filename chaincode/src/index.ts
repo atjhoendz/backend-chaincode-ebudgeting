@@ -4,8 +4,10 @@
 
 import { FabCar } from "./fabcar";
 import { User } from "./contracts/admin/user";
+import { Provinsi } from "./contracts/admin/provinsi";
 
 export { FabCar } from "./fabcar";
 export { User } from "./contracts/admin/user";
+export { Provinsi } from "./contracts/admin/provinsi";
 
-export const contracts: any[] = [User, FabCar];
+export const contracts: any[] = [User, FabCar, Provinsi];
