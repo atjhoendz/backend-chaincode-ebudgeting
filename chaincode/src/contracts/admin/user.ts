@@ -62,7 +62,7 @@ export class User extends Contract {
   ): Promise<string> {
     const resultAsByte = await ctx.stub.getState(key);
 
-    if (!resultAsByte.toString()) return "Data tidak ditemukan";
+    if (!resultAsByte.toString()) return "Data tidak tersedia";
 
     const updatedData: userModel = {
       docType: "user",
