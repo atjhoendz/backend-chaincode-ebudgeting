@@ -24,4 +24,48 @@ export class Provinsi extends Contract {
 
     return wrappedResults;
   }
+
+  public async getByKey(ctx: Context, key: string): Promise<string> {
+    const resultAsByte = await ctx.stub.getState(key);
+
+    if (!resultAsByte.toString()) return "Data tidak ditemukan";
+
+    let resultAsJSON = {};
+    try {
+      resultAsJSON = JSON.parse(resultAsByte.toString());
+    } catch (err) {
+      return `Error: ${err.message}`;
+    }
+
+    return JSON.stringify(resultAsJSON);
+  }
+
+  public async updateByKey(
+    ctx: Context,
+    key: string,
+    nama: string
+  ): Promise<string> {
+    const resultAsByte = await ctx.stub.getState(key);
+
+    if (!resultAsByte.toString()) return "Data tidak tersedia";
+
+    const updatedData: provinsiModel = {
+      docType: "provinsi",
+      nama,
+    };
+
+    await ctx.stub.putState(key, Buffer.from(JSON.stringify(updatedData)));
+
+    return "Data berhasil diperbarui";
+  }
+
+  public async deleteByKey(ctx: Context, key: string): Promise<string> {
+    const resultAsByte = await ctx.stub.getState(key);
+
+    if (!resultAsByte.toString()) return "Data tidak ditemukan";
+
+    await ctx.stub.deleteState(key);
+
+    return "Data berhasil dihapus";
+  }
 }

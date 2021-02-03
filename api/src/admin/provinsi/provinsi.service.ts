@@ -24,15 +24,31 @@ export class ProvinsiService {
     return this.appUtil.prettyJSONString(result);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} provinsi`;
+  async findOne(key: string) {
+    const result = await this.hlfConfig.contract.Provinsi.evaluateTransaction(
+      'getByKey',
+      key,
+    );
+
+    return this.appUtil.prettyJSONString(result);
   }
 
-  update(id: number, updateProvinsiDto: UpdateProvinsiDto) {
-    return `This action updates a #${id} provinsi`;
+  async update(key: string, updateProvinsiDto: UpdateProvinsiDto) {
+    const result = await this.hlfConfig.contract.Provinsi.submitTransaction(
+      'updateByKey',
+      key,
+      updateProvinsiDto.nama,
+    );
+
+    return this.appUtil.prettyJSONString(result);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} provinsi`;
+  async remove(key: string) {
+    const result = await this.hlfConfig.contract.Provinsi.submitTransaction(
+      'deleteByKey',
+      key,
+    );
+
+    return this.appUtil.prettyJSONString(result);
   }
 }

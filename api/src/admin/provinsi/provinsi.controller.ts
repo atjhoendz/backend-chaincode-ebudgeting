@@ -27,21 +27,21 @@ export class ProvinsiController {
     return this.provinsiService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.provinsiService.findOne(+id);
+  @Get(':key')
+  findOne(@Param('key') key: string) {
+    return this.provinsiService.findOne(key);
   }
 
-  @Put(':id')
+  @Put(':key')
   update(
-    @Param('id') id: string,
+    @Param('key') key: string,
     @Body() updateProvinsiDto: UpdateProvinsiDto,
   ) {
-    return this.provinsiService.update(+id, updateProvinsiDto);
+    return this.provinsiService.update(key, updateProvinsiDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.provinsiService.remove(+id);
+  @Delete(':key')
+  remove(@Param('key') key: string) {
+    return this.provinsiService.remove(key);
   }
 }
