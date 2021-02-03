@@ -1,6 +1,7 @@
 import { Context, Contract } from "fabric-contract-api";
 import { User as userModel } from "../../models/admin/user";
 import { v1 as uuidv1 } from "uuid";
+import { queryString, wrapResult } from "../../helper/assetHelper";
 
 export class User extends Contract {
   public async create(
@@ -26,44 +27,13 @@ export class User extends Contract {
   }
 
   public async getAll(ctx: Context): Promise<string> {
-    const allResults = [];
-    const queryString = {
-      selector: {
-        docType: "user",
-      },
-    };
+    const qs = queryString({ docType: "user" });
 
-    for await (const { key, value } of ctx.stub.getQueryResult(
-      JSON.stringify(queryString)
-    )) {
-      const strValue = Buffer.from(value).toString("utf8");
-      let record;
-      try {
-        record = JSON.parse(strValue);
-      } catch (err) {
-        console.log(err);
-        record = strValue;
-      }
-      allResults.push({ Key: key, Record: record });
-    }
+    const results = await ctx.stub.getQueryResult(JSON.stringify(qs));
 
-    return JSON.stringify(allResults);
-  }
+    const wrappedResults = await wrapResult(results);
 
-  public async getByRange(ctx: Context): Promise<string> {
-    const allResults = [];
-    for await (const { key, value } of ctx.stub.getStateByRange("", "")) {
-      const strValue = Buffer.from(value).toString("utf8");
-      let record;
-      try {
-        record = JSON.parse(strValue);
-      } catch (err) {
-        console.log(err);
-        record = strValue;
-      }
-      allResults.push({ Key: key, Record: record });
-    }
-    return JSON.stringify(allResults);
+    return wrappedResults;
   }
 
   public async getByKey(ctx: Context, key: string): Promise<string> {
