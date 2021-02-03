@@ -15,7 +15,7 @@ export class UserService {
       createUserDto.nip,
       createUserDto.jabatan,
     ];
-    const result = await this.hlfConfig.contractUser.submitTransaction(
+    const result = await this.hlfConfig.contract.User.submitTransaction(
       'create',
       ...newUser,
     );
@@ -23,14 +23,14 @@ export class UserService {
   }
 
   async findAll() {
-    const result = await this.hlfConfig.contractUser.evaluateTransaction(
+    const result = await this.hlfConfig.contract.User.evaluateTransaction(
       'getAll',
     );
     return this.appUtil.prettyJSONString(result);
   }
 
   async findOne(key: string) {
-    const result = await this.hlfConfig.contractUser.evaluateTransaction(
+    const result = await this.hlfConfig.contract.User.evaluateTransaction(
       'getByKey',
       key,
     );
@@ -46,7 +46,7 @@ export class UserService {
       updateUserDto.jabatan,
     ];
 
-    const result = await this.hlfConfig.contractUser.submitTransaction(
+    const result = await this.hlfConfig.contract.User.submitTransaction(
       'updateByKey',
       key,
       ...updatedData,
@@ -56,7 +56,7 @@ export class UserService {
   }
 
   async remove(key: string) {
-    const result = await this.hlfConfig.contractUser.submitTransaction(
+    const result = await this.hlfConfig.contract.User.submitTransaction(
       'deleteByKey',
       key,
     );
