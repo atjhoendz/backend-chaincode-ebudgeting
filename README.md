@@ -12,8 +12,12 @@ Backend service for e-budgeting with blockchain network using Nest JS and Hyperl
   Fabric chaincode location
 - network <br>
   Blockchain network configuration
+- explorer <br>
+  Hyperledger explorer configuration
 
-## Installation
+## API Development
+
+### Installation
 
 ```bash
 $ cd api
@@ -21,7 +25,7 @@ $ cd api
 $ npm install
 ```
 
-## Setup network
+### Setup network
 
 ```bash
 $ cd network
@@ -33,7 +37,7 @@ $ ./startFabric.sh
 $ ./networkDown.sh
 ```
 
-## Running the app
+### Running the app
 
 ```bash
 $ cd api
@@ -48,7 +52,7 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+### Test
 
 ```bash
 $ cd api
@@ -66,3 +70,11 @@ $ npm run test:cov
 ## API Docs URL
 
 > http://localhost:3000/docs
+
+## Hyperledger Explorer URL
+
+> http://localhost:8080
+> <br>
+> username: exploreradmin
+> <br>
+> password: exploreradminpw
