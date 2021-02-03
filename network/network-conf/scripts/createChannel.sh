@@ -131,8 +131,8 @@ createChannel
 infoln "Join Org1 peers to the channel..."
 infoln "Joining peer0.."
 joinChannel 1 0
-infoln "Joining peer1..."
-joinChannel 1 1
+# infoln "Joining peer1..."
+# joinChannel 1 1
 
 ## Set the anchor peers for each org in the channel
 # infoln "Updating anchor peers for org1..."

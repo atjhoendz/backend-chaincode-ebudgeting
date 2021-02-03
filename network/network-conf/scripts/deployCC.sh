@@ -333,8 +333,8 @@ packageChaincode 1
 infoln "Installing chaincode on peer0.org1..."
 installChaincode 1 0
 
-infoln "Installing chaincode on peer1.org1..."
-installChaincode 1 1
+# infoln "Installing chaincode on peer1.org1..."
+# installChaincode 1 1
 
 # infoln "Install chaincode on peer0.org2..."
 # installChaincode 2
@@ -343,8 +343,8 @@ installChaincode 1 1
 infoln "Query to peer0.org1..."
 queryInstalled 1 0
 
-infoln "Query to peer1.org1..."
-queryInstalled 1 1 
+# infoln "Query to peer1.org1..."
+# queryInstalled 1 1 
 
 ## approve the definition for org1
 approveForMyOrg 1 0
