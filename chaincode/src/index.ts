@@ -2,12 +2,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { FabCar } from "./fabcar";
-import { User } from "./contracts/admin/user";
-import { Provinsi } from "./contracts/admin/provinsi";
+import { Chaincode } from "./chaincode";
+export { Chaincode } from "./chaincode";
 
-export { FabCar } from "./fabcar";
-export { User } from "./contracts/admin/user";
-export { Provinsi } from "./contracts/admin/provinsi";
-
-export const contracts: any[] = [User, FabCar, Provinsi];
+export const contracts: any[] = [Chaincode];
