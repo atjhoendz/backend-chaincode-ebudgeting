@@ -8,8 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ProvinsiService } from './provinsi.service';
-import { CreateProvinsiDto } from './dto/create-provinsi.dto';
-import { UpdateProvinsiDto } from './dto/update-provinsi.dto';
+import { ProvinsiDto } from './provinsi.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Provinsi')
@@ -18,8 +17,8 @@ export class ProvinsiController {
   constructor(private readonly provinsiService: ProvinsiService) {}
 
   @Post()
-  create(@Body() createProvinsiDto: CreateProvinsiDto) {
-    return this.provinsiService.create(createProvinsiDto);
+  create(@Body() provinsiDto: ProvinsiDto) {
+    return this.provinsiService.create(provinsiDto);
   }
 
   @Get()
@@ -33,11 +32,8 @@ export class ProvinsiController {
   }
 
   @Put(':key')
-  update(
-    @Param('key') key: string,
-    @Body() updateProvinsiDto: UpdateProvinsiDto,
-  ) {
-    return this.provinsiService.update(key, updateProvinsiDto);
+  update(@Param('key') key: string, @Body() provinsiDto: ProvinsiDto) {
+    return this.provinsiService.update(key, provinsiDto);
   }
 
   @Delete(':key')

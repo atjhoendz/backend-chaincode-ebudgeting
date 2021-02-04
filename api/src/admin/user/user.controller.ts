@@ -8,8 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDto } from './user.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('User')
@@ -18,8 +17,8 @@ export class UserController {
   constructor(private readonly UserService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.UserService.create(createUserDto);
+  create(@Body() userDto: UserDto) {
+    return this.UserService.create(userDto);
   }
 
   @Get()
@@ -33,8 +32,8 @@ export class UserController {
   }
 
   @Put(':key')
-  update(@Param('key') key: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.UserService.update(key, updateUserDto);
+  update(@Param('key') key: string, @Body() userDto: UserDto) {
+    return this.UserService.update(key, userDto);
   }
 
   @Delete(':key')

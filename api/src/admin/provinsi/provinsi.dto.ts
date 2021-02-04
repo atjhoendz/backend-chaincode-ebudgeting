@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateProvinsiDto {
+export class ProvinsiDto {
+  @ApiProperty({
+    default: 'provinsi',
+  })
+  docType: string;
+
   @ApiProperty({
     example: 'Jawa',
   })

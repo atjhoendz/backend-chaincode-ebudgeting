@@ -56,35 +56,10 @@ export class ChainModule {
           Appconfig.hlf.channelId,
         );
 
-        const fabcarContract = await network.getContract(
+        this.hlfConfig.contract = await network.getContract(
           Appconfig.hlf.chaincodeId,
-          'FabCar',
+          'Chaincode',
         );
-
-        const userContract = await network.getContract(
-          Appconfig.hlf.chaincodeId,
-          'User',
-        );
-
-        const provinsiContract = await network.getContract(
-          Appconfig.hlf.chaincodeId,
-          'Provinsi',
-        );
-
-        this.hlfConfig.contract = {
-          Fabcar: fabcarContract,
-          User: userContract,
-          Provinsi: provinsiContract,
-        };
-
-        // const result = await this.hlfConfig.contract.evaluateTransaction(
-        //   'queryAllCars',
-        // );
-
-        // Logger.log(
-        //   `*** Result: ${this.appUtil.prettyJSONString(result)}`,
-        //   'RESULT QUERY',
-        // );
       } catch (error) {
         Logger.error(`Error: ${error}`);
       }

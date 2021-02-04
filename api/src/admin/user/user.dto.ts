@@ -9,7 +9,12 @@ export enum Jabatan {
   KepalaBiroAUPK = 'KepalaBiroAUPK',
 }
 
-export class CreateUserDto {
+export class UserDto {
+  @ApiProperty({
+    default: 'user',
+  })
+  docType: string;
+
   @ApiProperty({
     description: 'username yang akan digunakan untuk login',
     example: 'testUsername',
