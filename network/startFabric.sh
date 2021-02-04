@@ -13,8 +13,7 @@ rm -rf ../api/dist/common/config/wallet/*
 pushd network-conf
 ./network.sh down
 ./network.sh up createChannel -ca -s couchdb
-# ./network.sh deployCC -ccn fabcar -ccv 1 -cci initLedger -ccl ${CC_SRC_LANGUAGE} -ccp ${CC_SRC_PATH}
-./network.sh deployCC -ccn fabcar -ccv 1 -ccl ${CC_SRC_LANGUAGE} -ccp ${CC_SRC_PATH}
+./network.sh deployCC -ccn ebudgetingCC -ccv 1 -ccl ${CC_SRC_LANGUAGE} -ccp ${CC_SRC_PATH}
 popd
 
 cat <<EOF
