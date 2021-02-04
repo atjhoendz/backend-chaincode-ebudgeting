@@ -1,7 +1,7 @@
 {
-    "name": "fabcar",
+    "name": "ebudgetingcc",
     "version": "1.0.0",
-    "description": "FabCar contract implemented in TypeScript",
+    "description": "E-Budgeting chanincode",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
     "engines": {
