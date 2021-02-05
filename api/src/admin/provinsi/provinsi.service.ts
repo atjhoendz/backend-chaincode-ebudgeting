@@ -5,7 +5,7 @@ import { ProvinsiDto } from './provinsi.dto';
 
 @Injectable()
 export class ProvinsiService {
-  constructor(public hlfConfig: HlfConfig, public appUtil: AppUtil) {}
+  constructor(private hlfConfig: HlfConfig, private appUtil: AppUtil) {}
   async create(provinsiDto: ProvinsiDto) {
     const result = await this.hlfConfig.contract.submitTransaction(
       'create',

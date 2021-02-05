@@ -5,7 +5,7 @@ import { UserDto } from './user.dto';
 
 @Injectable()
 export class UserService {
-  constructor(public hlfConfig: HlfConfig, public appUtil: AppUtil) {}
+  constructor(private hlfConfig: HlfConfig, private appUtil: AppUtil) {}
   async create(userDto: UserDto) {
     const result = await this.hlfConfig.contract.submitTransaction(
       'create',
