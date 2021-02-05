@@ -3,9 +3,10 @@ import { ChainModule } from './chaincode-service/chain.module';
 import { HlfConfig } from './chaincode-service/hlfConfig';
 import { UserModule } from './admin/user/user.module';
 import { ProvinsiModule } from './admin/provinsi/provinsi.module';
+import { KategoriModule } from './admin/kategori/kategori.module';
 
 @Module({
-  imports: [ChainModule, HlfConfig, UserModule, ProvinsiModule],
+  imports: [ChainModule, HlfConfig, UserModule, ProvinsiModule, KategoriModule],
 })
 export class AppModule {
   constructor(chainModule: ChainModule) {
