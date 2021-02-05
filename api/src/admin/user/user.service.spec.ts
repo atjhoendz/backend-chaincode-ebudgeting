@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppUtil } from 'src/chaincodeService/appUtil.service';
-import { HlfConfig } from 'src/chaincodeService/hlfConfig';
+import { MockContract } from '../../../test/mockService/mockContract';
+import { HlfConfig } from '../../../test/mockService/mockHlfConfig';
 import { UserService } from './user.service';
 
 describe('UserService', () => {
@@ -8,7 +9,7 @@ describe('UserService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserService, AppUtil, HlfConfig],
+      providers: [UserService, AppUtil, HlfConfig, MockContract],
     }).compile();
 
     service = module.get<UserService>(UserService);
@@ -23,7 +24,7 @@ describe('UserService', () => {
     it('should return empty array for empty data', async () => {
       const result = await service.findAll();
 
-      expect(result).toEqual([]);
+      expect(result).toEqual('[]');
     });
   });
 });
