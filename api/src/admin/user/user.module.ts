@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { ChainModule } from 'src/chaincode-service/chain.module';
-import { HlfConfig } from 'src/chaincode-service/hlfConfig';
+import { ChainModule } from 'src/chaincodeService/chain.module';
+import { HlfConfig } from 'src/chaincodeService/hlfConfig';
 
 @Module({
   controllers: [UserController],

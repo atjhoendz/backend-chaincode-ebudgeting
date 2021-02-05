@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { AppUtil } from 'src/chaincode-service/appUtil.service';
-import { HlfConfig } from 'src/chaincode-service/hlfConfig';
+import { AppUtil } from 'src/chaincodeService/appUtil.service';
+import { HlfConfig } from 'src/chaincodeService/hlfConfig';
 import { UserDto } from './user.dto';
 
 @Injectable()

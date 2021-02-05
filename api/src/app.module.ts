@@ -1,6 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
-import { ChainModule } from './chaincode-service/chain.module';
-import { HlfConfig } from './chaincode-service/hlfConfig';
+import { ChainModule } from './chaincodeService/chain.module';
+import { HlfConfig } from './chaincodeService/hlfConfig';
 import { UserModule } from './admin/user/user.module';
 import { ProvinsiModule } from './admin/provinsi/provinsi.module';
 import { KategoriModule } from './admin/kategori/kategori.module';

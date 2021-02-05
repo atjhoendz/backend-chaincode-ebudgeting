@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppUtil } from 'src/chaincode-service/appUtil.service';
-import { HlfConfig } from 'src/chaincode-service/hlfConfig';
+import { AppUtil } from 'src/chaincodeService/appUtil.service';
+import { HlfConfig } from 'src/chaincodeService/hlfConfig';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 
