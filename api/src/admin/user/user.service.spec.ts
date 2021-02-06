@@ -56,19 +56,14 @@ describe('UserService', () => {
 
       expect(result).toEqual('Data berhasil ditambahkan');
     });
-
-    /*
-     * Todo:
-     * check if props data is not complete
-     */
   });
 
   describe('Find spesific data', () => {
     it('should return object if data is exist', async () => {
       await service.create(mockData);
-      const resultAll = await service.findAll();
+      const results = await service.findAll();
 
-      const key = JSON.parse(resultAll)[0].Key;
+      const key = JSON.parse(results)[0].Key;
 
       const result = await service.findOne(key);
 
@@ -77,6 +72,44 @@ describe('UserService', () => {
 
     it('should return msg if data is not exist', async () => {
       const result = await service.findOne(mockState.Key);
+
+      expect(result).toEqual('Data tidak tersedia');
+    });
+  });
+
+  describe('Update a data', () => {
+    it('should return true msg if update succeed', async () => {
+      await service.create(mockData);
+      const results = await service.findAll();
+
+      const key = JSON.parse(results)[0].Key;
+
+      const result = await service.update(key, mockData);
+
+      expect(result).toEqual('Data berhasil diperbarui');
+    });
+
+    it('should return false msg if data is not exist', async () => {
+      const result = await service.update(mockState.Key, mockData);
+
+      expect(result).toEqual('Data tidak tersedia');
+    });
+  });
+
+  describe('Delete a data', () => {
+    it('should return true msg if delete succeed', async () => {
+      await service.create(mockData);
+      const results = await service.findAll();
+
+      const key = JSON.parse(results)[0].Key;
+
+      const result = await service.remove(key);
+
+      expect(result).toEqual('Data berhasil dihapus');
+    });
+
+    it('should return false msg if data is not exist', async () => {
+      const result = await service.remove(mockState.Key);
 
       expect(result).toEqual('Data tidak tersedia');
     });

@@ -20,9 +20,10 @@ export class MockContract {
 
   submitTransaction = (funcName: string, ...params: string[]) =>
     new Promise<Buffer>((resolve) => {
+      let jsonData, found;
       switch (funcName) {
         case ListFunc.CREATE:
-          const jsonData = JSON.parse(params[0]);
+          jsonData = JSON.parse(params[0]);
 
           const newState: State = {
             Key: uuidv1(),
@@ -37,6 +38,27 @@ export class MockContract {
             msg = Buffer.from('Data berhasil ditambahkan');
 
           resolve(msg);
+          break;
+        case ListFunc.UPDATE:
+          jsonData = JSON.parse(params[1]);
+
+          found = false;
+          for (const key in this.states) {
+            if (this.states[key].Key === params[0]) {
+              this.states[key].Record = jsonData;
+              found = true;
+            }
+          }
+
+          if (found) return resolve(Buffer.from('Data berhasil diperbarui'));
+          resolve(Buffer.from('Data tidak tersedia'));
+          break;
+        case ListFunc.DELETE:
+          if (this.states.find((state) => state.Key === params[0])) {
+            this.states = this.states.filter((state) => state.Key != params[0]);
+            return resolve(Buffer.from('Data berhasil dihapus'));
+          }
+          resolve(Buffer.from('Data tidak tersedia'));
           break;
       }
     });
