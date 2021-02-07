@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { rejects } from 'assert';
 import { v1 as uuidv1 } from 'uuid';
 
 export enum ListFunc {
@@ -19,7 +20,7 @@ export class MockContract {
   private states: Array<State> = [];
 
   submitTransaction = (funcName: string, ...params: string[]) =>
-    new Promise<Buffer>((resolve) => {
+    new Promise<Buffer>((resolve, reject) => {
       let jsonData, found;
       switch (funcName) {
         case ListFunc.CREATE:
@@ -60,11 +61,14 @@ export class MockContract {
           }
           resolve(Buffer.from('Data tidak tersedia'));
           break;
+        default:
+          reject('Nama fungsi tidak tersedia');
+          break;
       }
     });
 
   evaluateTransaction = (funcName: string, ...params: string[]) =>
-    new Promise<Buffer>((resolve) => {
+    new Promise<Buffer>((resolve, reject) => {
       let result;
       switch (funcName) {
         case ListFunc.GETBYTYPE:
@@ -84,6 +88,9 @@ export class MockContract {
           }
 
           resolve(Buffer.from(result));
+          break;
+        default:
+          reject('Nama fungsi tidak tersedia');
           break;
       }
     });
