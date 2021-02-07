@@ -4,9 +4,17 @@ import { HlfConfig } from './chaincodeService/hlfConfig';
 import { UserModule } from './admin/user/user.module';
 import { ProvinsiModule } from './admin/provinsi/provinsi.module';
 import { KategoriModule } from './admin/kategori/kategori.module';
+import { LembagaModule } from './admin/lembaga/lembaga.module';
 
 @Module({
-  imports: [ChainModule, HlfConfig, UserModule, ProvinsiModule, KategoriModule],
+  imports: [
+    ChainModule,
+    HlfConfig,
+    UserModule,
+    ProvinsiModule,
+    KategoriModule,
+    LembagaModule,
+  ],
 })
 export class AppModule {
   constructor(chainModule: ChainModule) {
