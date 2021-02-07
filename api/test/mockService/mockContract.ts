@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { rejects } from 'assert';
 import { v1 as uuidv1 } from 'uuid';
 
 export enum ListFunc {
