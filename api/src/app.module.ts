@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { ProvinsiModule } from './provinsi/provinsi.module';
 import { KategoriModule } from './kategori/kategori.module';
 import { LembagaModule } from './lembaga/lembaga.module';
+import { AnggaranModule } from './anggaran/anggaran.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { LembagaModule } from './lembaga/lembaga.module';
     ProvinsiModule,
     KategoriModule,
     LembagaModule,
+    AnggaranModule,
   ],
 })
 export class AppModule {
