@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LembagaController } from './lembaga.controller';
 import { AppUtil } from 'src/chaincodeService/appUtil.service';
-import { HlfConfig } from '../../../test/mockService/mockHlfConfig';
-import { MockContract } from '../../../test/mockService/mockContract';
+import { HlfConfig } from '../../test/mockService/mockHlfConfig';
+import { MockContract } from '../../test/mockService/mockContract';
 import { LembagaService } from './lembaga.service';
 
 describe('LembagaController', () => {

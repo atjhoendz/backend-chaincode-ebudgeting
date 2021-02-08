@@ -1,10 +1,10 @@
 import { Logger, Module } from '@nestjs/common';
 import { ChainModule } from './chaincodeService/chain.module';
 import { HlfConfig } from './chaincodeService/hlfConfig';
-import { UserModule } from './admin/user/user.module';
-import { ProvinsiModule } from './admin/provinsi/provinsi.module';
-import { KategoriModule } from './admin/kategori/kategori.module';
-import { LembagaModule } from './admin/lembaga/lembaga.module';
+import { UserModule } from './user/user.module';
+import { ProvinsiModule } from './provinsi/provinsi.module';
+import { KategoriModule } from './kategori/kategori.module';
+import { LembagaModule } from './lembaga/lembaga.module';
 
 @Module({
   imports: [

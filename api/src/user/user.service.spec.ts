@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppUtil } from 'src/chaincodeService/appUtil.service';
-import { MockContract } from '../../../test/mockService/mockContract';
-import { HlfConfig } from '../../../test/mockService/mockHlfConfig';
+import { MockContract } from '../../test/mockService/mockContract';
+import { HlfConfig } from '../../test/mockService/mockHlfConfig';
 import { UserDto } from './user.dto';
 import { UserService } from './user.service';
 
