@@ -3,7 +3,7 @@ import { Gateway } from 'fabric-network';
 import { CAUtil } from './caUtil.service';
 import { AppUtil } from './appUtil.service';
 import { HlfConfig } from './hlfConfig';
-import { Appconfig } from '../common/config/appconfig';
+import { Appconfig } from '../config/appconfig';
 
 @Module({
   providers: [CAUtil, AppUtil, HlfConfig],

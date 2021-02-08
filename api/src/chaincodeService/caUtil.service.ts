@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as FabricCAServices from 'fabric-ca-client';
 import { Wallet } from 'fabric-network';
-import { Appconfig } from '../common/config/appconfig';
+import { Appconfig } from '../config/appconfig';
 
 @Injectable()
 export class CAUtil {
