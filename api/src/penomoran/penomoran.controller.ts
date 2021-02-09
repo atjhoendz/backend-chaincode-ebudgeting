@@ -7,9 +7,11 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { PenomoranDTO } from './penomoran.dto';
 import { PenomoranService } from './penomoran.service';
 
+@ApiTags('Penomoran')
 @Controller('penomoran')
 export class PenomoranController {
   constructor(private readonly penomoranService: PenomoranService) {}

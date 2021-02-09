@@ -7,9 +7,11 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AnggaranDTO } from './anggaran.dto';
 import { AnggaranService } from './anggaran.service';
 
+@ApiTags('Anggaran')
 @Controller('anggaran')
 export class AnggaranController {
   constructor(private readonly anggaranService: AnggaranService) {}
