@@ -6,6 +6,7 @@ import { ChainModule } from 'src/chaincodeService/chain.module';
 
 @Module({
   controllers: [AnggaranController],
-  providers: [AnggaranService, HlfConfig, ChainModule],
+  providers: [AnggaranService],
+  imports: [ChainModule, HlfConfig],
 })
 export class AnggaranModule {}

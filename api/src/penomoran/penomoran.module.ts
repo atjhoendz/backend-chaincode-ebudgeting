@@ -6,6 +6,7 @@ import { HlfConfig } from 'src/chaincodeService/hlfConfig';
 
 @Module({
   controllers: [PenomoranController],
-  providers: [PenomoranService, ChainModule, HlfConfig],
+  providers: [PenomoranService],
+  imports: [ChainModule, HlfConfig],
 })
 export class PenomoranModule {}

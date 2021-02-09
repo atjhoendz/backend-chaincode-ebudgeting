@@ -6,6 +6,7 @@ import { HlfConfig } from 'src/chaincodeService/hlfConfig';
 
 @Module({
   controllers: [PmkController],
-  providers: [PmkService, ChainModule, HlfConfig],
+  providers: [PmkService],
+  imports: [ChainModule, HlfConfig],
 })
 export class PmkModule {}
