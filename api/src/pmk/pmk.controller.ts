@@ -26,18 +26,18 @@ export class PmkController {
     return this.pmkService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.pmkService.findOne(+id);
+  @Get(':key')
+  findOne(@Param('key') key: string) {
+    return this.pmkService.findOne(key);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() pmkDTO: PmkDTO) {
-    return this.pmkService.update(+id, pmkDTO);
+  @Put(':key')
+  update(@Param('key') key: string, @Body() pmkDTO: PmkDTO) {
+    return this.pmkService.update(key, pmkDTO);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.pmkService.remove(+id);
+  @Delete(':key')
+  remove(@Param('key') key: string) {
+    return this.pmkService.remove(key);
   }
 }
