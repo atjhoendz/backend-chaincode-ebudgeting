@@ -7,5 +7,5 @@ pushd network-conf
 popd
 
 # remove generated wallet
-rm -rf ../api/src/common/config/wallet/*
-rm -rf ../api/dist/common/config/wallet/*
+rm -rf ../api/src/config/wallet/*
+rm -rf ../api/dist/config/wallet/*

@@ -7,8 +7,8 @@ starttime=$(date +%s)
 CC_SRC_LANGUAGE="typescript"
 CC_SRC_PATH="../../chaincode"
 
-rm -rf ../api/src/common/config/wallet/*
-rm -rf ../api/dist/common/config/wallet/*
+rm -rf ../api/src/config/wallet/*
+rm -rf ../api/dist/config/wallet/*
 
 pushd network-conf
 ./network.sh down
