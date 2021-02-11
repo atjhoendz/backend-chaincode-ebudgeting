@@ -35,6 +35,18 @@ export class Chaincode extends Contract {
     return JSON.stringify(resultAsJSON);
   }
 
+  public async getByQuery(ctx: Context, query: string): Promise<string> {
+    const qs = queryString(JSON.parse(query));
+
+    const results = await ctx.stub.getQueryResult(JSON.stringify(qs));
+
+    const wrappedResults = await wrapResult(results);
+
+    if (JSON.parse(wrappedResults).length > 0) return wrappedResults;
+
+    return "Data tidak tersedia";
+  }
+
   public async updateByKey(
     ctx: Context,
     key: string,
@@ -62,10 +74,4 @@ export class Chaincode extends Contract {
 
     return true;
   }
-
-  // TODO
-  /*
-   * Get By Query
-   *
-   */
 }
