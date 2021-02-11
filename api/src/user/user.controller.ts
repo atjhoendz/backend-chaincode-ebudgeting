@@ -6,6 +6,7 @@ import {
   Put,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './user.dto';
@@ -24,6 +25,11 @@ export class UserController {
   @Get()
   findAll() {
     return this.UserService.findAll();
+  }
+
+  @Get('find')
+  findByQuery(@Query('type') type: string, @Query('value') value: string) {
+    return this.UserService.findByQuery(type, value);
   }
 
   @Get(':key')

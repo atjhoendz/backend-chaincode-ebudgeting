@@ -30,6 +30,19 @@ export class UserService {
     return this.appUtil.prettyJSONString(result);
   }
 
+  async findByQuery(type: string, value: string) {
+    const query = JSON.stringify({
+      [type]: value,
+    });
+
+    const result = await this.hlfConfig.contract.evaluateTransaction(
+      'getByQuery',
+      query,
+    );
+
+    return this.appUtil.prettyJSONString(result);
+  }
+
   async update(key: string, userDto: UserDto) {
     const result = await this.hlfConfig.contract.submitTransaction(
       'updateByKey',
