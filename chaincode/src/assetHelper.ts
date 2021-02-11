@@ -1,4 +1,4 @@
-export const wrapResult = async (iterator: any): Promise<string> => {
+export const wrapResult = async (iterator: any): Promise<Array<any>> => {
   const allResults = [];
 
   while (true) {
@@ -18,9 +18,8 @@ export const wrapResult = async (iterator: any): Promise<string> => {
       allResults.push({ Key: res.value.key, Record: record });
     }
     if (res.done) {
-      console.log("end of data");
       await iterator.close();
-      return JSON.stringify(allResults);
+      return allResults;
     }
   }
 };

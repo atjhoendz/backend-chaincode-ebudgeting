@@ -3,13 +3,13 @@ import { v1 as uuidv1 } from "uuid";
 import { queryString, wrapResult } from "./assetHelper";
 
 export class Chaincode extends Contract {
-  public async create(ctx: Context, data: string): Promise<string> {
+  public async create(ctx: Context, data: string): Promise<boolean> {
     await ctx.stub.putState(uuidv1(), Buffer.from(data));
 
-    return "Data berhasil ditambahkan";
+    return true;
   }
 
-  public async getByType(ctx: Context, type: string): Promise<string> {
+  public async getByType(ctx: Context, type: string): Promise<Array<any>> {
     const qs = queryString({ docType: type });
 
     const results = await ctx.stub.getQueryResult(JSON.stringify(qs));
@@ -19,52 +19,50 @@ export class Chaincode extends Contract {
     return wrappedResults;
   }
 
-  public async getByKey(ctx: Context, key: string): Promise<string> {
+  public async getByKey(ctx: Context, key: string): Promise<Object> {
     const resultAsByte = await ctx.stub.getState(key);
 
-    if (!resultAsByte.toString()) return "Data tidak tersedia";
+    if (!resultAsByte.toString()) return {};
 
     let resultAsJSON = {};
 
     try {
       resultAsJSON = JSON.parse(resultAsByte.toString());
     } catch (err) {
-      return `Error: ${err.message}`;
+      return { error: err.message };
     }
 
-    return JSON.stringify(resultAsJSON);
+    return resultAsJSON;
   }
 
-  public async getByQuery(ctx: Context, query: string): Promise<string> {
+  public async getByQuery(ctx: Context, query: string): Promise<Array<any>> {
     const qs = queryString(JSON.parse(query));
 
     const results = await ctx.stub.getQueryResult(JSON.stringify(qs));
 
     const wrappedResults = await wrapResult(results);
 
-    if (JSON.parse(wrappedResults).length > 0) return wrappedResults;
-
-    return "Data tidak tersedia";
+    return wrappedResults;
   }
 
   public async updateByKey(
     ctx: Context,
     key: string,
     data: string
-  ): Promise<string> {
-    if (!(await this.isDataExist(ctx, key))) return "Data tidak tersedia";
+  ): Promise<boolean> {
+    if (!(await this.isDataExist(ctx, key))) return false;
 
     await ctx.stub.putState(key, Buffer.from(data));
 
-    return "Data berhasil diperbarui";
+    return true;
   }
 
-  public async deleteByKey(ctx: Context, key: string): Promise<string> {
-    if (!(await this.isDataExist(ctx, key))) return "Data tidak tersedia";
+  public async deleteByKey(ctx: Context, key: string): Promise<boolean> {
+    if (!(await this.isDataExist(ctx, key))) return false;
 
     await ctx.stub.deleteState(key);
 
-    return "Data berhasil dihapus";
+    return true;
   }
 
   public async isDataExist(ctx: Context, key: string): Promise<boolean> {
