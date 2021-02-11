@@ -3,7 +3,6 @@ import { ApiProperty } from '@nestjs/swagger';
 export enum Jabatan {
   Admin = 'Admin',
   BagianUmum = 'BagianUmum',
-  Pemohon = 'Pemohon',
   AdminKeuangan = 'AdminKeuangan',
   KepalaKeuangan = 'KepalaKeuangan',
   KepalaBiroAUPK = 'KepalaBiroAUPK',
