@@ -7,7 +7,7 @@ import { AnggaranService } from './anggaran.service';
 
 const mockData: AnggaranDTO = {
   docType: 'anggaran',
-  nama_lembaga: 'FMIPA',
+  key_lembaga: 'asdasdasdasdas',
   sisa_anggaran: 12000000,
 };
 

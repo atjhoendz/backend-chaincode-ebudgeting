@@ -7,9 +7,9 @@ export class AnggaranDTO {
   docType: string;
 
   @ApiProperty({
-    example: 'FMIPA',
+    example: 'sample-key',
   })
-  nama_lembaga: string;
+  key_lembaga: string;
 
   @ApiProperty({
     example: 12000000,
