@@ -8,5 +8,6 @@ import { HlfConfig } from 'src/chaincodeService/hlfConfig';
   controllers: [UserController],
   providers: [UserService],
   imports: [ChainModule, HlfConfig],
+  exports: [UserService],
 })
 export class UserModule {}

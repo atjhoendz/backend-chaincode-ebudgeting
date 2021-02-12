@@ -8,6 +8,9 @@ import { LembagaModule } from './lembaga/lembaga.module';
 import { AnggaranModule } from './anggaran/anggaran.module';
 import { PmkModule } from './pmk/pmk.module';
 import { PenomoranModule } from './penomoran/penomoran.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
@@ -20,6 +23,11 @@ import { PenomoranModule } from './penomoran/penomoran.module';
     AnggaranModule,
     PmkModule,
     PenomoranModule,
+    AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration],
+    }),
   ],
 })
 export class AppModule {

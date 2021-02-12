@@ -28,6 +28,7 @@ async function bootstrap() {
       'Github Repo',
       'https://github.com/atjhoendz/backend-chaincode-ebudgeting',
     )
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
