@@ -6,22 +6,11 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthDTO } from './auth.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
 import { LocalAuthGuard } from './guard/local-auth.guard';
-
-export class AuthDTO {
-  @ApiProperty({
-    example: 'testUsername',
-  })
-  username: string;
-
-  @ApiProperty({
-    example: '123pwd',
-  })
-  password: string;
-}
 
 @ApiTags('Auth')
 @Controller('auth')
