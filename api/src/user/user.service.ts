@@ -30,9 +30,9 @@ export class UserService {
     return this.appUtil.prettyJSONString(result);
   }
 
-  async findByQuery(type: string, value: string) {
+  async findByQuery(key: string, value: string) {
     const query = JSON.stringify({
-      [type]: value,
+      [key]: value,
     });
 
     const result = await this.hlfConfig.contract.evaluateTransaction(
