@@ -7,13 +7,13 @@ Backend service for e-budgeting with blockchain network using Nest JS and Hyperl
 ## Directory Structure
 
 - api <br>
-  RESTful API using NestJS
+  RESTful API using NestJS.
 - chaincode <br>
-  Fabric chaincode location
+  Fabric chaincode location.
 - network <br>
-  Blockchain network configuration
+  Blockchain network configuration.
 - explorer <br>
-  Hyperledger explorer configuration
+  Hyperledger explorer configuration.
 
 ## API Development
 
