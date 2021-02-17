@@ -9,6 +9,7 @@ import {
   Query,
   InternalServerErrorException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './user.dto';
@@ -25,6 +26,15 @@ export class UserController {
 
   @Post()
   async create(@Body() userDto: UserDto) {
+    const findResult = await this.UserService.findByQuery(
+      'username',
+      userDto.username,
+    );
+
+    if (JSON.parse(findResult).length) {
+      throw new BadRequestException(undefined, 'Username sudah tersedia');
+    }
+
     const result = await this.UserService.create(userDto);
 
     if (JSON.parse(result)) {
