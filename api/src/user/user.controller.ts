@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Query,
+  InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './user.dto';
@@ -25,7 +27,7 @@ export class UserController {
   async create(@Body() userDto: UserDto) {
     const result = await this.UserService.create(userDto);
 
-    if (result) {
+    if (JSON.parse(result)) {
       return this.responseHelper.wrapResponse(
         true,
         201,
@@ -33,6 +35,11 @@ export class UserController {
         'Data berhasil ditambahkan.',
       );
     }
+
+    throw new InternalServerErrorException(
+      undefined,
+      'Data tidak berhasil ditambahkan.',
+    );
   }
 
   @Get()
@@ -63,12 +70,7 @@ export class UserController {
       );
     }
 
-    return this.responseHelper.wrapResponse(
-      true,
-      200,
-      result,
-      'Data tidak ditemukan.',
-    );
+    throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
   @Get(':key')
@@ -83,12 +85,8 @@ export class UserController {
         'Data berhasil didapatkan.',
       );
     }
-    return this.responseHelper.wrapResponse(
-      true,
-      200,
-      result,
-      'Data tidak ditemukan.',
-    );
+
+    throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
   @Put(':key')
@@ -104,12 +102,7 @@ export class UserController {
       );
     }
 
-    return this.responseHelper.wrapResponse(
-      false,
-      200,
-      '',
-      'Data tidak ditemukan',
-    );
+    throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
   @Delete(':key')
@@ -125,11 +118,6 @@ export class UserController {
       );
     }
 
-    return this.responseHelper.wrapResponse(
-      false,
-      200,
-      '',
-      'Data tidak ditemukan.',
-    );
+    throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 }

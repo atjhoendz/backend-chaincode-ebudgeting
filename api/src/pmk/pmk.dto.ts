@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class PmkDTO {
   @IsString()
@@ -50,7 +50,7 @@ export class PmkDTO {
   })
   satuan: string;
 
-  @IsString()
+  @IsNumber()
   @ApiProperty({
     example: 20000000,
   })
