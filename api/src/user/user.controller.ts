@@ -11,39 +11,125 @@ import {
 import { UserService } from './user.service';
 import { UserDto } from './user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ResponseHelper } from 'src/helper/response.helper';
 
 @ApiTags('User')
 @Controller('User')
 export class UserController {
-  constructor(private readonly UserService: UserService) {}
+  constructor(
+    private readonly UserService: UserService,
+    private responseHelper: ResponseHelper,
+  ) {}
 
   @Post()
-  create(@Body() userDto: UserDto) {
-    return this.UserService.create(userDto);
+  async create(@Body() userDto: UserDto) {
+    const result = await this.UserService.create(userDto);
+
+    if (result) {
+      return this.responseHelper.wrapResponse(
+        true,
+        201,
+        '',
+        'Data berhasil ditambahkan.',
+      );
+    }
   }
 
   @Get()
-  findAll() {
-    return this.UserService.findAll();
+  async findAll() {
+    const result = await this.UserService.findAll();
+
+    return this.responseHelper.wrapResponse(
+      true,
+      200,
+      result,
+      'Data berhasil didapatkan.',
+    );
   }
 
   @Get('find')
-  findByQuery(@Query('type') type: string, @Query('value') value: string) {
-    return this.UserService.findByQuery(type, value);
+  async findByQuery(
+    @Query('type') type: string,
+    @Query('value') value: string,
+  ) {
+    const result = await this.UserService.findByQuery(type, value);
+
+    if (JSON.parse(result).length) {
+      return this.responseHelper.wrapResponse(
+        true,
+        200,
+        result,
+        'Data berhasil didapatkan.',
+      );
+    }
+
+    return this.responseHelper.wrapResponse(
+      true,
+      200,
+      result,
+      'Data tidak ditemukan.',
+    );
   }
 
   @Get(':key')
-  findOne(@Param('key') key: string) {
-    return this.UserService.findOne(key);
+  async findOne(@Param('key') key: string) {
+    const result = await this.UserService.findOne(key);
+
+    if (Object.keys(JSON.parse(result)).length) {
+      return this.responseHelper.wrapResponse(
+        true,
+        200,
+        result,
+        'Data berhasil didapatkan.',
+      );
+    }
+    return this.responseHelper.wrapResponse(
+      true,
+      200,
+      result,
+      'Data tidak ditemukan.',
+    );
   }
 
   @Put(':key')
-  update(@Param('key') key: string, @Body() userDto: UserDto) {
-    return this.UserService.update(key, userDto);
+  async update(@Param('key') key: string, @Body() userDto: UserDto) {
+    const result = await this.UserService.update(key, userDto);
+
+    if (JSON.parse(result)) {
+      return this.responseHelper.wrapResponse(
+        true,
+        200,
+        '',
+        'Data berhasil diperbarui.',
+      );
+    }
+
+    return this.responseHelper.wrapResponse(
+      false,
+      200,
+      '',
+      'Data tidak ditemukan',
+    );
   }
 
   @Delete(':key')
-  remove(@Param('key') key: string) {
-    return this.UserService.remove(key);
+  async remove(@Param('key') key: string) {
+    const result = await this.UserService.remove(key);
+
+    if (JSON.parse(result)) {
+      return this.responseHelper.wrapResponse(
+        true,
+        200,
+        '',
+        'Data berhasil dihapus.',
+      );
+    }
+
+    return this.responseHelper.wrapResponse(
+      false,
+      200,
+      '',
+      'Data tidak ditemukan.',
+    );
   }
 }
