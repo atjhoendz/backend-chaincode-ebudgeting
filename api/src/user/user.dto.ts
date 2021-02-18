@@ -1,13 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
-
-export enum Jabatan {
-  Admin = 'Admin',
-  BagianUmum = 'BagianUmum',
-  AdminKeuangan = 'AdminKeuangan',
-  KepalaKeuangan = 'KepalaKeuangan',
-  KepalaBiroAUPK = 'KepalaBiroAUPK',
-}
+import { Role } from 'src/role/role.enum';
 
 export class UserDto {
   @IsString()
@@ -45,8 +38,8 @@ export class UserDto {
 
   @IsString()
   @ApiProperty({
-    enum: Jabatan,
-    example: 'admin',
+    enum: Role,
+    example: 'Admin',
   })
   jabatan: string;
 }
