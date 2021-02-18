@@ -35,7 +35,12 @@ export class UserController {
       throw new BadRequestException(undefined, 'Username sudah tersedia');
     }
 
-    const result = await this.UserService.create(userDto);
+    let result;
+    try {
+      result = await this.UserService.create(userDto);
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
 
     if (JSON.parse(result)) {
       return this.responseHelper.wrapResponse(
