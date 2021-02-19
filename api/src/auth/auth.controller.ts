@@ -32,6 +32,14 @@ export class AuthController {
     return response.send({ 'access-token': cookie });
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  async logout(@Res() res: Response) {
+    res.setHeader('Set-Cookie', this.authService.getCookieForLogOut());
+
+    return res.sendStatus(200);
+  }
+
   @ApiCookieAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
