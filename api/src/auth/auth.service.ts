@@ -2,18 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
+import { ConfigService } from '@nestjs/config';
+import { TokenPayload } from './payload.model';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    private configService: ConfigService,
   ) {}
-
-  /*
-   * TODO
-   * Using bcrypt for validate password
-   */
 
   async validateUser(username: string, pass: string): Promise<any> {
     let user = await this.userService.findByQuery('username', username);
@@ -27,8 +25,8 @@ export class AuthService {
 
     if (user.length && isPassValid) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...Record } = user[0].Record;
-      return { Key: user[0].Key, Record };
+      const { jabatan } = user[0].Record;
+      return { Key: user[0].Key, jabatan };
     }
 
     return null;
@@ -42,14 +40,16 @@ export class AuthService {
     return result;
   }
 
-  async login(user: any) {
-    const payload = {
-      username: user.Record.username,
+  getCookieWithJwtToken(user: any) {
+    const payload: TokenPayload = {
       sub: user.Key,
-      role: user.Record.jabatan,
+      role: user.jabatan,
     };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+
+    const token = this.jwtService.sign(payload);
+
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
+      'JWT_EXPIRESTIME',
+    )}`;
   }
 }

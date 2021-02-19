@@ -3,10 +3,13 @@ import {
   Controller,
   Get,
   Post,
+  Req,
   Request,
+  Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 import { Roles } from 'src/role/role.decorator';
 import { Role } from 'src/role/role.enum';
 import { RolesGuard } from 'src/role/roles.guard';
@@ -22,11 +25,14 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Body() authDTO: AuthDTO, @Request() req) {
-    return this.authService.login(req.user);
+  async login(@Body() authDTO: AuthDTO, @Req() req, @Res() response: Response) {
+    const cookie = this.authService.getCookieWithJwtToken(req.user);
+    response.setHeader('Set-Cookie', cookie);
+
+    return response.send({ 'access-token': cookie });
   }
 
-  @ApiBearerAuth()
+  @ApiCookieAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Get('testing')

@@ -4,12 +4,16 @@ import * as bodyParser from 'body-parser';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { EnvConfig } from './config/env';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // json body parser
   app.use(bodyParser.json());
+
+  // cookie parser
+  app.use(cookieParser());
 
   // Global request validation
   app.useGlobalPipes(new ValidationPipe());
@@ -31,7 +35,7 @@ async function bootstrap() {
       'Github Repo',
       'https://github.com/atjhoendz/backend-chaincode-ebudgeting',
     )
-    .addBearerAuth()
+    .addCookieAuth('Authentication')
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
