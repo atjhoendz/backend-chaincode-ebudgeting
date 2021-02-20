@@ -6,23 +6,31 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { TokenPayload } from '../payload.model';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtRefreshTokenStrategy extends PassportStrategy(
+  Strategy,
+  'jwt-refresh-token',
+) {
   constructor(private configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
-          return request?.cookies?.Authentication;
+          return request?.cookies?.Refresh;
         },
       ]),
-      ignoreExpirations: false,
-      secretOrKey: configService.get('JWT_ACCESS_TOKEN_SECRET'),
+      secretOrKey: configService.get('JWT_REFRESH_TOKEN_SECRET'),
+      // passReqToCallback: true,
     });
   }
 
-  async validate(payload: TokenPayload) {
-    return {
+  async validate(request: Request, payload: TokenPayload) {
+    // const refreshToken = request?.cookies?.Refresh;
+    const data = {
       userKey: payload.sub,
       role: payload.role,
+    };
+
+    return {
+      data,
     };
   }
 }
