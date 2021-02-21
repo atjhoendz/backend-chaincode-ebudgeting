@@ -7,7 +7,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { Roles } from 'src/role/role.decorator';
 import { Role } from 'src/role/role.enum';
@@ -43,6 +43,7 @@ export class AuthController {
     return response.send({
       'access-token': accessTokenCookie.split(';')[0],
       'refresh-token': refreshTokenCookie.split(';')[0],
+      message: 'Login berhasil',
     });
   }
 
@@ -54,7 +55,7 @@ export class AuthController {
     return res.sendStatus(200);
   }
 
-  @ApiCookieAuth()
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Get('testing')
@@ -62,7 +63,7 @@ export class AuthController {
     return req.user;
   }
 
-  @ApiCookieAuth()
+  @ApiBearerAuth()
   @UseGuards(JwtRefreshTokenGuard)
   @Get('refresh')
   async refreshToken(@Req() req: Request) {
@@ -70,6 +71,9 @@ export class AuthController {
 
     req.res.setHeader('Set-Cookie', accessToken);
 
-    return req.user;
+    return {
+      'access-token': accessToken,
+      message: 'Membuat akses token baru sukses',
+    };
   }
 }
