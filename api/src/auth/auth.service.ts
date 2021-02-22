@@ -26,9 +26,8 @@ export class AuthService {
     );
 
     if (isPassValid) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { jabatan } = user[0].Record;
-      return { Key: user[0].Key, jabatan };
+      const { jabatan, username } = user[0].Record;
+      return { Key: user[0].Key, Record: { jabatan, username } };
     }
 
     return null;
@@ -45,7 +44,8 @@ export class AuthService {
   getCookieWithJwtAccessToken(user: any) {
     const payload: TokenPayload = {
       sub: user.Key,
-      role: user.jabatan,
+      role: user.Record.jabatan,
+      username: user.Record.username,
     };
 
     const accessToken = this.jwtService.sign(payload, {
@@ -66,7 +66,8 @@ export class AuthService {
   getCookieWithJwtRefreshToken(user: any) {
     const payload: TokenPayload = {
       sub: user.Key,
-      role: user.jabatan,
+      role: user.Record.jabatan,
+      username: user.Record.username,
     };
 
     const refreshToken = this.jwtService.sign(payload, {

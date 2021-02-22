@@ -20,6 +20,7 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(
     const data = {
       userKey: payload.sub,
       role: payload.role,
+      username: payload.username,
     };
 
     return {
