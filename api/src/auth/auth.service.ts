@@ -48,14 +48,19 @@ export class AuthService {
       role: user.jabatan,
     };
 
-    const token = this.jwtService.sign(payload, {
+    const accessToken = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
       expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRES_TIME'),
     });
 
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
+    const accessTokenCookie = `Authentication=${accessToken}; HttpOnly; Path=/; Max-Age=${this.configService.get(
       'JWT_ACCESS_TOKEN_EXPIRES_TIME',
-    )}`;
+    )}; SameSite=${this.configService.get('COOKIE_SAME_SITE')}`;
+
+    return {
+      accessToken,
+      accessTokenCookie,
+    };
   }
 
   getCookieWithJwtRefreshToken(user: any) {
@@ -64,16 +69,19 @@ export class AuthService {
       role: user.jabatan,
     };
 
-    const token = this.jwtService.sign(payload, {
+    const refreshToken = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
       expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_TIME'),
     });
 
-    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
+    const refreshTokenCookie = `Refresh=${refreshToken}; HttpOnly; Path=/; Max-Age=${this.configService.get(
       'JWT_REFRESH_TOKEN_EXPIRES_TIME',
-    )}`;
+    )}; SameSite=${this.configService.get('COOKIE_SAME_SITE')}`;
 
-    return cookie;
+    return {
+      refreshToken,
+      refreshTokenCookie,
+    };
   }
 
   getCookieForLogOut() {

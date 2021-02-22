@@ -7,4 +7,5 @@ export default () => ({
   JWT_REFRESH_TOKEN_SECRET: process.env.JWT_REFRESH_TOKEN_SECRET || 'secret',
   JWT_REFRESH_TOKEN_EXPIRES_TIME:
     process.env.JWT_REFRESH_TOKEN_EXPIRES_TIME || '7d',
+  COOKIE_SAME_SITE: process.env.COOKIE_SAME_SITE || 'None',
 });

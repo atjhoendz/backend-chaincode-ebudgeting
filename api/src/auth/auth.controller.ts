@@ -30,19 +30,23 @@ export class AuthController {
     @Req() request: Request,
     @Res() response: Response,
   ) {
-    const accessTokenCookie = this.authService.getCookieWithJwtAccessToken(
-      request.user,
-    );
+    const {
+      accessToken,
+      accessTokenCookie,
+    } = this.authService.getCookieWithJwtAccessToken(request.user);
 
-    const refreshTokenCookie = this.authService.getCookieWithJwtRefreshToken(
-      request.user,
-    );
+    const {
+      refreshToken,
+      refreshTokenCookie,
+    } = this.authService.getCookieWithJwtRefreshToken(request.user);
 
     response.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
 
-    return response.send({
-      'access-token': accessTokenCookie.split(';')[0],
-      'refresh-token': refreshTokenCookie.split(';')[0],
+    return response.status(200).send({
+      data: {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      },
       message: 'Login berhasil',
     });
   }
@@ -67,12 +71,17 @@ export class AuthController {
   @UseGuards(JwtRefreshTokenGuard)
   @Get('refresh')
   async refreshToken(@Req() req: Request) {
-    const accessToken = this.authService.getCookieWithJwtAccessToken(req.user);
+    const {
+      accessToken,
+      accessTokenCookie,
+    } = this.authService.getCookieWithJwtAccessToken(req.user);
 
-    req.res.setHeader('Set-Cookie', accessToken);
+    req.res.setHeader('Set-Cookie', accessTokenCookie);
 
     return {
-      'access-token': accessToken,
+      data: {
+        accessToken: accessToken,
+      },
       message: 'Membuat akses token baru sukses',
     };
   }
