@@ -18,13 +18,13 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(
 
   async validate(payload: TokenPayload) {
     const data = {
-      userKey: payload.sub,
-      role: payload.role,
-      username: payload.username,
+      Key: payload.sub,
+      Record: {
+        jabatan: payload.role,
+        username: payload.username,
+      },
     };
 
-    return {
-      data,
-    };
+    return data;
   }
 }
