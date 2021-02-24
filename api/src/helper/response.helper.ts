@@ -11,9 +11,7 @@ export class ResponseHelper {
   ) {
     try {
       data = JSON.parse(data);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch {}
     const response: ResponseModel = {
       success: success,
       statusCode: statusCode,

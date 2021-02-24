@@ -3,6 +3,7 @@ import { AppUtil } from 'src/chaincodeService/appUtil.service';
 import { HlfConfig } from 'src/chaincodeService/hlfConfig';
 import { UserDto } from './user.dto';
 import * as bcrypt from 'bcrypt';
+import { UpdatePwdDTO } from './updatePwd.dto';
 
 @Injectable()
 export class UserService {
@@ -62,6 +63,43 @@ export class UserService {
     );
 
     return this.appUtil.prettyJSONString(result);
+  }
+
+  async updatePassword(key: string, updatePwdDTO: UpdatePwdDTO) {
+    let dataDB = await this.findOne(key);
+
+    if (!Object.keys(JSON.parse(dataDB)).length) {
+      throw new Error('Data tidak ditemukan.');
+    }
+
+    try {
+      dataDB = JSON.parse(dataDB);
+    } catch (err) {
+      console.log(err);
+    }
+
+    const { password_lama, ...dataPwd } = updatePwdDTO;
+
+    try {
+      const isPasswordValid = await bcrypt.compare(
+        password_lama,
+        dataDB.password,
+      );
+
+      const hashedPassword = await bcrypt.hash(dataPwd.password, 10);
+
+      dataPwd.password = hashedPassword;
+
+      if (isPasswordValid) {
+        const result = await this.update(key, dataPwd);
+
+        return this.appUtil.prettyJSONString(result);
+      }
+
+      return false;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async remove(key: string) {

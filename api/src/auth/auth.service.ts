@@ -21,8 +21,8 @@ export class AuthService {
     if (!user.length) return null;
 
     const isPassValid = await this.isPasswordValid(
-      user[0]?.Record?.password,
       pass,
+      user[0]?.Record?.password,
     );
 
     if (isPassValid) {
@@ -37,7 +37,7 @@ export class AuthService {
     plainPass: string,
     hashedPass: string,
   ): Promise<boolean> {
-    const result = await bcrypt.compare(hashedPass, plainPass);
+    const result = await bcrypt.compare(plainPass, hashedPass);
     return result;
   }
 

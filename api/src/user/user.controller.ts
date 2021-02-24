@@ -15,6 +15,7 @@ import { UserService } from './user.service';
 import { UserDto } from './user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ResponseHelper } from 'src/helper/response.helper';
+import { UpdatePwdDTO } from './updatePwd.dto';
 
 @ApiTags('User')
 @Controller('User')
@@ -46,7 +47,7 @@ export class UserController {
       return this.responseHelper.wrapResponse(
         true,
         201,
-        '',
+        {},
         'Data berhasil ditambahkan.',
       );
     }
@@ -108,16 +109,43 @@ export class UserController {
   async update(@Param('key') key: string, @Body() userDto: UserDto) {
     const result = await this.UserService.update(key, userDto);
 
-    if (JSON.parse(result)) {
+    if (result) {
       return this.responseHelper.wrapResponse(
         true,
         200,
-        '',
+        {},
         'Data berhasil diperbarui.',
       );
     }
 
     throw new NotFoundException(undefined, 'Data tidak ditemukan.');
+  }
+
+  @Put('password/:key')
+  async updatePassword(
+    @Param('key') key: string,
+    @Body() updatePwdDTO: UpdatePwdDTO,
+  ) {
+    try {
+      const result = await this.UserService.updatePassword(key, updatePwdDTO);
+
+      if (result) {
+        return this.responseHelper.wrapResponse(
+          true,
+          200,
+          {},
+          'Password berhasil diperbarui.',
+        );
+      }
+      return this.responseHelper.wrapResponse(
+        true,
+        200,
+        {},
+        'Password lama tidak sesuai.',
+      );
+    } catch (err) {
+      throw new NotFoundException(undefined, err.message);
+    }
   }
 
   @Delete(':key')
@@ -128,7 +156,7 @@ export class UserController {
       return this.responseHelper.wrapResponse(
         true,
         200,
-        '',
+        {},
         'Data berhasil dihapus.',
       );
     }
