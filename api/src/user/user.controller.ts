@@ -137,12 +137,7 @@ export class UserController {
           'Password berhasil diperbarui.',
         );
       }
-      return this.responseHelper.wrapResponse(
-        true,
-        200,
-        {},
-        'Password lama tidak sesuai.',
-      );
+      throw new BadRequestException(undefined, 'Password lama tidak sesuai.');
     } catch (err) {
       throw new NotFoundException(undefined, err.message);
     }
