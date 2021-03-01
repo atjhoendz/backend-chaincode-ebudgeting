@@ -10,9 +10,9 @@ export class AnggaranDTO {
 
   @IsString()
   @ApiProperty({
-    example: 'sample-key',
+    example: 'FMIPA',
   })
-  key_lembaga: string;
+  nama_lembaga: string;
 
   @IsNumber()
   @ApiProperty({
