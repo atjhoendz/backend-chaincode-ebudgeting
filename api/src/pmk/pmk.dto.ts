@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class PmkDTO {
   @IsString()
@@ -21,10 +21,11 @@ export class PmkDTO {
   jenis_pmk: string;
 
   @IsString()
+  @IsOptional()
   @ApiProperty({
     example: 'golonganpenginapan',
   })
-  golongan_penginapan: string;
+  golongan_penginapan?: string;
 
   @IsString()
   @ApiProperty({
@@ -45,10 +46,11 @@ export class PmkDTO {
   tujuan: string;
 
   @IsString()
+  @IsOptional()
   @ApiProperty({
     example: 'cthSatuan',
   })
-  satuan: string;
+  satuan?: string;
 
   @IsNumber()
   @ApiProperty({
@@ -57,26 +59,28 @@ export class PmkDTO {
   biaya: number;
 
   @IsString()
+  @IsOptional()
   @ApiProperty({
     example: 'dalam_kota',
   })
-  dalam_kota: string;
+  dalam_kota?: string;
 
   @IsString()
+  @IsOptional()
   @ApiProperty({
     example: 'luar_kota',
   })
-  luar_kota: string;
+  luar_kota?: string;
 
   @IsString()
   @ApiProperty({
-    example: 'keyprovinsi',
+    example: 'nama Provinsi',
   })
-  key_provinsi: string;
+  nama_provinsi: string;
 
   @IsString()
   @ApiProperty({
-    example: 'key_kategori',
+    example: 'nama Kategori',
   })
-  key_kategori: string;
+  nama_kategori: string;
 }
