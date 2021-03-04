@@ -8,7 +8,7 @@ export class Chaincode extends Contract {
       docType: "user",
       username: "admin",
       nama_lengkap: "Administrator",
-      password: "$2y$10$wMnu5IlY6pF4nPFYRhpr/eVIDHsBpXSBs9FMSqWI4pG4GXZBX2vD2 ",
+      password: "$2b$10$rLLQTp0CJu1VSe.iGG3t8.PHgGOPg4sysHumCl96TlrDNGo7hR5P2",
       nip: "123456789098765432",
       jabatan: "Admin",
     };
