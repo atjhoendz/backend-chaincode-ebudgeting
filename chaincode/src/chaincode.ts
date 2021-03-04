@@ -3,6 +3,19 @@ import { v1 as uuidv1 } from "uuid";
 import { queryString, wrapResult } from "./assetHelper";
 
 export class Chaincode extends Contract {
+  public async initLedger(ctx: Context) {
+    const user = {
+      docType: "user",
+      username: "admin",
+      nama_lengkap: "Administrator",
+      password: "$2y$10$wMnu5IlY6pF4nPFYRhpr/eVIDHsBpXSBs9FMSqWI4pG4GXZBX2vD2 ",
+      nip: "123456789098765432",
+      jabatan: "Admin",
+    };
+
+    await this.create(ctx, JSON.stringify(user));
+  }
+
   public async create(ctx: Context, data: string): Promise<boolean> {
     await ctx.stub.putState(uuidv1(), Buffer.from(data));
 
