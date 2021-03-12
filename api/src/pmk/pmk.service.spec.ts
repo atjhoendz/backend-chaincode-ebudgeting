@@ -17,8 +17,8 @@ const mockData: PmkDTO = {
   biaya: 202020020,
   dalam_kota: 'dalam_kota',
   luar_kota: 'luar_kota',
-  key_provinsi: 'keyprovinsi',
-  key_kategori: 'keykategori',
+  nama_provinsi: 'namaProvinsi',
+  nama_kategori: 'namaKategori',
 };
 
 const mockState = {
