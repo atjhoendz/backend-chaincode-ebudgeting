@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppUtil } from 'src/chaincodeService/appUtil.service';
+import { ResponseHelper } from 'src/helper/response.helper';
 import { MockContract } from '../../test/mockService/mockContract';
 import { HlfConfig } from '../../test/mockService/mockHlfConfig';
 import { UserDto } from './user.dto';
@@ -24,7 +25,13 @@ describe('UserService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserService, AppUtil, HlfConfig, MockContract],
+      providers: [
+        UserService,
+        AppUtil,
+        HlfConfig,
+        MockContract,
+        ResponseHelper,
+      ],
     }).compile();
 
     service = module.get<UserService>(UserService);

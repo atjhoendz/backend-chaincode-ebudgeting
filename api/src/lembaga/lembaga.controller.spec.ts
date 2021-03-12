@@ -4,6 +4,7 @@ import { AppUtil } from 'src/chaincodeService/appUtil.service';
 import { HlfConfig } from '../../test/mockService/mockHlfConfig';
 import { MockContract } from '../../test/mockService/mockContract';
 import { LembagaService } from './lembaga.service';
+import { ResponseHelper } from 'src/helper/response.helper';
 
 describe('LembagaController', () => {
   let controller: LembagaController;
@@ -11,7 +12,13 @@ describe('LembagaController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [LembagaController],
-      providers: [LembagaService, HlfConfig, AppUtil, MockContract],
+      providers: [
+        LembagaService,
+        HlfConfig,
+        AppUtil,
+        MockContract,
+        ResponseHelper,
+      ],
     }).compile();
 
     controller = module.get<LembagaController>(LembagaController);

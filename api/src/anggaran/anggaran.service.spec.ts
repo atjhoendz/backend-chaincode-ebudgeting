@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppUtil } from 'src/chaincodeService/appUtil.service';
+import { ResponseHelper } from 'src/helper/response.helper';
 import { MockContract } from '../../test/mockService/mockContract';
 import { HlfConfig } from '../../test/mockService/mockHlfConfig';
 import { AnggaranDTO } from './anggaran.dto';
@@ -7,7 +8,7 @@ import { AnggaranService } from './anggaran.service';
 
 const mockData: AnggaranDTO = {
   docType: 'anggaran',
-  key_lembaga: 'asdasdasdasdas',
+  nama_lembaga: 'asdasdasdasdas',
   sisa_anggaran: 12000000,
 };
 
@@ -21,7 +22,13 @@ describe('AnggaranService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AnggaranService, HlfConfig, MockContract, AppUtil],
+      providers: [
+        AnggaranService,
+        HlfConfig,
+        MockContract,
+        AppUtil,
+        ResponseHelper,
+      ],
     }).compile();
 
     service = module.get<AnggaranService>(AnggaranService);
