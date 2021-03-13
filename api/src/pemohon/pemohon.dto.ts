@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class PemohonDTO {
   @IsString()
@@ -8,6 +8,7 @@ export class PemohonDTO {
   })
   docType: string;
 
+  @IsOptional()
   @IsString()
   @ApiProperty({
     example: 'nomorspd192321',
@@ -62,6 +63,7 @@ export class PemohonDTO {
   })
   lama;
 
+  @IsOptional()
   @IsString()
   @ApiProperty({
     example: 'Ada',
@@ -74,6 +76,7 @@ export class PemohonDTO {
   })
   status_spd;
 
+  @IsOptional()
   @IsString()
   @ApiProperty({
     example: 'Diterima',
