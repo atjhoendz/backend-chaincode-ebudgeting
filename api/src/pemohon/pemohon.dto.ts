@@ -79,9 +79,16 @@ export class PemohonDTO {
   @IsOptional()
   @IsString()
   @ApiProperty({
-    example: 'Diterima',
+    example: 'Biro AUPK',
   })
-  status_permohonan;
+  status_berkas;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty({
+    example: '',
+  })
+  alasan_ditolak;
 
   @IsString()
   @ApiProperty({
