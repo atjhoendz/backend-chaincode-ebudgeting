@@ -4,4 +4,5 @@ export enum Role {
   AdminKeuangan = 'AdminKeuangan',
   KepalaKeuangan = 'KepalaKeuangan',
   KepalaBiroAUPK = 'KepalaBiroAUPK',
+  Pemohon = 'Pemohon',
 }
