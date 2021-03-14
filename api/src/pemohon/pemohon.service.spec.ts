@@ -19,7 +19,8 @@ const mockData: PemohonDTO = {
   lama: '2 hari',
   bukti_spd: 'Ada',
   status_spd: 'Ada',
-  status_permohonan: 'Diterima',
+  status_berkas: 'Diterima',
+  alasan_ditolak: '',
   nama_lembaga: 'FMIPA',
 };
 
