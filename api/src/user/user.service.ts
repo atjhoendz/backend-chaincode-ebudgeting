@@ -78,25 +78,14 @@ export class UserService {
       console.log(err);
     }
 
-    const { password_lama, ...dataPwd } = updatePwdDTO;
-
     try {
-      const isPasswordValid = await bcrypt.compare(
-        password_lama,
-        dataDB.password,
-      );
+      const hashedPassword = await bcrypt.hash(updatePwdDTO.password, 10);
 
-      const hashedPassword = await bcrypt.hash(dataPwd.password, 10);
+      updatePwdDTO.password = hashedPassword;
 
-      dataPwd.password = hashedPassword;
+      const result = await this.update(key, updatePwdDTO);
 
-      if (isPasswordValid) {
-        const result = await this.update(key, dataPwd);
-
-        return this.appUtil.prettyJSONString(result);
-      }
-
-      return false;
+      return this.appUtil.prettyJSONString(result);
     } catch (err) {
       console.log(err);
     }

@@ -23,12 +23,6 @@ export class UpdatePwdDTO {
 
   @IsString()
   @ApiProperty({
-    example: '123pwd',
-  })
-  password_lama: string;
-
-  @IsString()
-  @ApiProperty({
     example: 'passwordBaru',
   })
   password: string;
