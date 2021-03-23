@@ -11,6 +11,7 @@ import { PenomoranModule } from './penomoran/penomoran.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { PemohonModule } from './pemohon/pemohon.module';
+import { EstimasiModule } from './estimasi/estimasi.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -30,6 +31,7 @@ import configuration from './config/configuration';
       load: [configuration],
     }),
     PemohonModule,
+    EstimasiModule,
   ],
 })
 export class AppModule {
