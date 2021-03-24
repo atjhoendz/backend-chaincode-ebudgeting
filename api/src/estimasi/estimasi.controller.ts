@@ -9,10 +9,12 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ResponseHelper } from 'src/helper/response.helper';
 import { EstimasiDTO } from './estimasi.dto';
 import { EstimasiService } from './estimasi.service';
 
+@ApiTags('Estimasi')
 @Controller('estimasi')
 export class EstimasiController {
   constructor(
@@ -67,7 +69,7 @@ export class EstimasiController {
     throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
-  @Put('key')
+  @Put(':key')
   async update(@Param('key') key: string, @Body() estimasiDTO: EstimasiDTO) {
     const result = await this.estimasiService.update(key, estimasiDTO);
 
