@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { AppUtil } from 'src/chaincodeService/appUtil.service';
-import { HlfConfig } from 'src/chaincodeService/hlfConfig';
+import { AppUtil } from 'src/chaincode-service/appUtil.service';
+import { HlfConfig } from 'src/chaincode-service/hlfConfig';
 import { UserDto } from './user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdatePwdDTO } from './updatePwd.dto';

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppUtil } from 'src/chaincodeService/appUtil.service';
+import { AppUtil } from 'src/chaincode-service/appUtil.service';
 import { ResponseHelper } from 'src/helper/response.helper';
 import { MockContract } from '../../test/mockService/mockContract';
 import { HlfConfig } from '../../test/mockService/mockHlfConfig';

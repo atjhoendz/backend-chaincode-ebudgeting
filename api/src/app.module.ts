@@ -1,6 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
-import { ChainModule } from './chaincodeService/chain.module';
-import { HlfConfig } from './chaincodeService/hlfConfig';
+import { ChainModule } from './chaincode-service/chain.module';
+import { HlfConfig } from './chaincode-service/hlfConfig';
 import { UserModule } from './user/user.module';
 import { ProvinsiModule } from './provinsi/provinsi.module';
 import { KategoriModule } from './kategori/kategori.module';
@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { PemohonModule } from './pemohon/pemohon.module';
 import { EstimasiModule } from './estimasi/estimasi.module';
+import { BiayaRiilModule } from './biaya-riil/biaya-riil.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -32,6 +33,7 @@ import configuration from './config/configuration';
     }),
     PemohonModule,
     EstimasiModule,
+    BiayaRiilModule,
   ],
 })
 export class AppModule {
