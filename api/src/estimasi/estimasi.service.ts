@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AppUtil } from 'src/chaincodeService/appUtil.service';
 import { HlfConfig } from 'src/chaincodeService/hlfConfig';
 import { EstimasiDTO } from './estimasi.dto';
@@ -35,19 +35,13 @@ export class EstimasiService {
   }
 
   async update(key: string, estimasiDTO: EstimasiDTO) {
-    try {
-      console.table(key);
-      console.table(estimasiDTO);
-      const result = await this.hlfConfig.contract.submitTransaction(
-        'updateByKey',
-        key,
-        JSON.stringify(estimasiDTO),
-      );
+    const result = await this.hlfConfig.contract.submitTransaction(
+      'updateByKey',
+      key,
+      JSON.stringify(estimasiDTO),
+    );
 
-      return this.appUtil.prettyJSONString(result);
-    } catch (err) {
-      console.log(`Catch error: ${err}`);
-    }
+    return this.appUtil.prettyJSONString(result);
   }
 
   async remove(key: string) {
