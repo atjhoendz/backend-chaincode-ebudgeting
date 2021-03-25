@@ -9,10 +9,12 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ResponseHelper } from 'src/helper/response.helper';
 import { BiayaRiilDTO } from './biaya-riil.dto';
 import { BiayaRiilService } from './biaya-riil.service';
 
+@ApiTags('Biaya Riil')
 @Controller('biaya-riil')
 export class BiayaRiilController {
   constructor(
