@@ -28,6 +28,12 @@ export class EstimasiDTO {
 
   @IsString()
   @ApiProperty({
+    example: 'kategori_pmk',
+  })
+  kategori_pmk: string;
+
+  @IsString()
+  @ApiProperty({
     example: '10/05/2019',
   })
   tanggal_berangkat: string;

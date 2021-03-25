@@ -11,6 +11,7 @@ const mockData: EstimasiDTO = {
   nama_pemohon: 'nama pemohon',
   nama_lembaga: 'FMIPA',
   jenis_pmk: 'jenispmk',
+  kategori_pmk: 'kategoripmk',
   tanggal_berangkat: '10/03/2020',
   keterangan: 'keterangan',
   asal: 'Bandung',
