@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class EstimasiDTO {
   @IsString()
@@ -39,6 +39,7 @@ export class EstimasiDTO {
   tanggal_berangkat: string;
 
   @IsString()
+  @IsOptional()
   @ApiProperty({
     example: 'keterangan',
   })
@@ -75,6 +76,7 @@ export class EstimasiDTO {
   total: string;
 
   @IsString()
+  @IsOptional()
   @ApiProperty({
     example: 'status',
   })
