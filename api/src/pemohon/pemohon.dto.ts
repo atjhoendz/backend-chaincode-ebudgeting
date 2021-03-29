@@ -13,7 +13,7 @@ export class PemohonDTO {
   @ApiProperty({
     example: 'nomorspd192321',
   })
-  nomor_spd: string;
+  nomor_spd?: string;
 
   @IsString()
   @ApiProperty({
@@ -68,34 +68,34 @@ export class PemohonDTO {
   @ApiProperty({
     example: 'Ada',
   })
-  bukti_spd: string;
+  bukti_spd?: string;
 
   @IsString()
   @ApiProperty({
     example: 'Diterima',
   })
-  status_spd: string;
+  status_spd?: string;
 
   @IsOptional()
   @IsString()
   @ApiProperty({
     example: 'Biro AUPK',
   })
-  status_berkas: string;
+  status_berkas?: string;
 
   @IsOptional()
   @IsString()
   @ApiProperty({
     example: 'Dalam Perjalanan',
   })
-  status_perjalanan: string;
+  status_perjalanan?: string;
 
   @IsOptional()
   @IsString()
   @ApiProperty({
     example: '',
   })
-  alasan_ditolak: string;
+  alasan_ditolak?: string;
 
   @IsString()
   @ApiProperty({
