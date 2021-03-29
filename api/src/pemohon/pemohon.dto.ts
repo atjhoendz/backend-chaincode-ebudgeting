@@ -86,6 +86,13 @@ export class PemohonDTO {
   @IsOptional()
   @IsString()
   @ApiProperty({
+    example: 'Dalam Perjalanan',
+  })
+  status_perjalanan;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty({
     example: '',
   })
   alasan_ditolak;
