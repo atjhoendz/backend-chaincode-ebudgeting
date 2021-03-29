@@ -13,93 +13,93 @@ export class PemohonDTO {
   @ApiProperty({
     example: 'nomorspd192321',
   })
-  nomor_spd;
+  nomor_spd: string;
 
   @IsString()
   @ApiProperty({
     example: '12938102901298019',
   })
-  nip;
+  nip: string;
 
   @IsString()
   @ApiProperty({
     example: 'maman',
   })
-  nama;
+  nama: string;
 
   @IsString()
   @ApiProperty({
     example: 'golongan',
   })
-  golongan;
+  golongan: string;
 
   @IsString()
   @ApiProperty({
     example: 'contohjabatan',
   })
-  jabatan;
+  jabatan: string;
 
   @IsString()
   @ApiProperty({
     example: 'pekerjaan',
   })
-  maksud_perjalanan;
+  maksud_perjalanan: string;
 
   @IsString()
   @ApiProperty({
     example: 'Bandung',
   })
-  asal;
+  asal: string;
 
   @IsString()
   @ApiProperty({
     example: 'Jakarta',
   })
-  tujuan;
+  tujuan: string;
 
   @IsString()
   @ApiProperty({
     example: '2 hari',
   })
-  lama;
+  lama: string;
 
   @IsOptional()
   @IsString()
   @ApiProperty({
     example: 'Ada',
   })
-  bukti_spd;
+  bukti_spd: string;
 
   @IsString()
   @ApiProperty({
-    example: 'Ada',
+    example: 'Diterima',
   })
-  status_spd;
+  status_spd: string;
 
   @IsOptional()
   @IsString()
   @ApiProperty({
     example: 'Biro AUPK',
   })
-  status_berkas;
+  status_berkas: string;
 
   @IsOptional()
   @IsString()
   @ApiProperty({
     example: 'Dalam Perjalanan',
   })
-  status_perjalanan;
+  status_perjalanan: string;
 
   @IsOptional()
   @IsString()
   @ApiProperty({
     example: '',
   })
-  alasan_ditolak;
+  alasan_ditolak: string;
 
   @IsString()
   @ApiProperty({
     example: 'FMIPA',
   })
-  nama_lembaga;
+  nama_lembaga: string;
 }
