@@ -73,4 +73,10 @@ export class BiayaRiilDTO {
     example: 'maman',
   })
   nama_pemohon: string;
+
+  @IsString()
+  @ApiProperty({
+    example: 'FMIPA',
+  })
+  nama_lembaga: string;
 }
