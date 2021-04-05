@@ -36,7 +36,6 @@ export class AuthController {
     } = this.authService.getCookieWithJwtAccessToken(request.user);
 
     const {
-      refreshToken,
       refreshTokenCookie,
     } = this.authService.getCookieWithJwtRefreshToken(request.user);
 
@@ -45,7 +44,6 @@ export class AuthController {
     return response.status(200).send({
       data: {
         accessToken: accessToken,
-        refreshToken: refreshToken,
       },
       message: 'Login berhasil',
     });
