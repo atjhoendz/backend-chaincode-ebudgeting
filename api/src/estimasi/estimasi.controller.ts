@@ -8,8 +8,10 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { ResponseHelper } from 'src/helper/response.helper';
 import { EstimasiDTO } from './estimasi.dto';
 import { EstimasiService } from './estimasi.service';
@@ -22,6 +24,8 @@ export class EstimasiController {
     private responseHelper: ResponseHelper,
   ) {}
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() estimasiDTO: EstimasiDTO) {
     const result = await this.estimasiService.create(estimasiDTO);
@@ -41,6 +45,8 @@ export class EstimasiController {
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
     const result = await this.estimasiService.findAll();
@@ -53,6 +59,8 @@ export class EstimasiController {
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get(':key')
   async findOne(@Param('key') key: string) {
     const result = await this.estimasiService.findOne(key);
@@ -69,6 +77,8 @@ export class EstimasiController {
     throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Put(':key')
   async update(@Param('key') key: string, @Body() estimasiDTO: EstimasiDTO) {
     const result = await this.estimasiService.update(key, estimasiDTO);
@@ -88,6 +98,8 @@ export class EstimasiController {
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Delete(':key')
   async remove(@Param('key') key: string) {
     const result = await this.estimasiService.remove(key);

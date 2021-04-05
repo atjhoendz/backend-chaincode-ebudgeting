@@ -8,11 +8,13 @@ import {
   Delete,
   InternalServerErrorException,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { ProvinsiService } from './provinsi.service';
 import { ProvinsiDto } from './provinsi.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ResponseHelper } from 'src/helper/response.helper';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 
 @ApiTags('Provinsi')
 @Controller('provinsi')
@@ -22,6 +24,8 @@ export class ProvinsiController {
     private responseHelper: ResponseHelper,
   ) {}
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() provinsiDto: ProvinsiDto) {
     const result = await this.provinsiService.create(provinsiDto);
@@ -41,6 +45,8 @@ export class ProvinsiController {
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
     const result = await this.provinsiService.findAll();
@@ -53,6 +59,8 @@ export class ProvinsiController {
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get(':key')
   async findOne(@Param('key') key: string) {
     const result = await this.provinsiService.findOne(key);
@@ -69,6 +77,8 @@ export class ProvinsiController {
     throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Put(':key')
   async update(@Param('key') key: string, @Body() provinsiDto: ProvinsiDto) {
     const result = await this.provinsiService.update(key, provinsiDto);
@@ -85,6 +95,8 @@ export class ProvinsiController {
     throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Delete(':key')
   async remove(@Param('key') key: string) {
     const result = await this.provinsiService.remove(key);

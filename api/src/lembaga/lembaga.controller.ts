@@ -8,8 +8,10 @@ import {
   Delete,
   InternalServerErrorException,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { ResponseHelper } from 'src/helper/response.helper';
 import { LembagaDto } from './lembaga.dto';
 import { LembagaService } from './lembaga.service';
@@ -22,6 +24,8 @@ export class LembagaController {
     private responseHelper: ResponseHelper,
   ) {}
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() lembagaDto: LembagaDto) {
     const result = await this.lembagaService.create(lembagaDto);
@@ -41,6 +45,8 @@ export class LembagaController {
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
     const result = await this.lembagaService.findAll();
@@ -53,6 +59,8 @@ export class LembagaController {
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get(':key')
   async findOne(@Param('key') key: string) {
     const result = await this.lembagaService.findOne(key);
@@ -69,6 +77,8 @@ export class LembagaController {
     throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Put(':key')
   async update(@Param('key') key: string, @Body() lembagaDto: LembagaDto) {
     const result = await this.lembagaService.update(key, lembagaDto);
@@ -85,6 +95,8 @@ export class LembagaController {
     throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Delete(':key')
   async remove(@Param('key') key: string) {
     const result = await this.lembagaService.remove(key);

@@ -10,12 +10,14 @@ import {
   InternalServerErrorException,
   NotFoundException,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ResponseHelper } from 'src/helper/response.helper';
 import { UpdatePwdDTO } from './updatePwd.dto';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 
 @ApiTags('User')
 @Controller('User')
@@ -25,6 +27,8 @@ export class UserController {
     private responseHelper: ResponseHelper,
   ) {}
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() userDto: UserDto) {
     const findResult = await this.UserService.findByQuery(
@@ -58,6 +62,8 @@ export class UserController {
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
     const result = await this.UserService.findAll();
@@ -70,6 +76,8 @@ export class UserController {
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get('find')
   async findByQuery(
     @Query('type') type: string,
@@ -89,6 +97,8 @@ export class UserController {
     throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get(':key')
   async findOne(@Param('key') key: string) {
     const result = await this.UserService.findOne(key);
@@ -105,6 +115,8 @@ export class UserController {
     throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Put(':key')
   async update(@Param('key') key: string, @Body() userDto: UserDto) {
     const result = await this.UserService.update(key, userDto);
@@ -121,6 +133,8 @@ export class UserController {
     throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Put('password/:key')
   async updatePassword(
     @Param('key') key: string,
@@ -143,6 +157,8 @@ export class UserController {
     }
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Delete(':key')
   async remove(@Param('key') key: string) {
     const result = await this.UserService.remove(key);

@@ -8,8 +8,10 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { ResponseHelper } from 'src/helper/response.helper';
 import { PemohonDTO } from './pemohon.dto';
 import { PemohonService } from './pemohon.service';
@@ -22,6 +24,8 @@ export class PemohonController {
     private responseHelper: ResponseHelper,
   ) {}
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() pemohonDTO: PemohonDTO) {
     const result = await this.pemohonService.create(pemohonDTO);
@@ -41,6 +45,8 @@ export class PemohonController {
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
     const result = await this.pemohonService.findAll();
@@ -53,6 +59,8 @@ export class PemohonController {
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get(':key')
   async findOne(@Param('key') key: string) {
     const result = await this.pemohonService.findOne(key);
@@ -69,6 +77,8 @@ export class PemohonController {
     throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Put(':key')
   async update(@Param('key') key: string, @Body() pemohonDTO: PemohonDTO) {
     const result = await this.pemohonService.update(key, pemohonDTO);
@@ -85,6 +95,8 @@ export class PemohonController {
     throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Delete(':key')
   async remove(@Param('key') key: string) {
     const result = await this.pemohonService.remove(key);
