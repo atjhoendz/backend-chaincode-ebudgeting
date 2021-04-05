@@ -19,7 +19,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   // Enable CORS
-  app.enableCors({ credentials: true });
+  app.enableCors({ credentials: true, origin: ['*.netlify.app', '*.test'] });
 
   // Prefix
   app.setGlobalPrefix('api');
