@@ -53,9 +53,10 @@ export class AuthService {
       expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRES_TIME'),
     });
 
-    const accessTokenCookie = `Authentication=${accessToken}; HttpOnly; Path=/; Max-Age=${this.configService.get(
-      'JWT_ACCESS_TOKEN_EXPIRES_TIME',
-    )}; SameSite=${this.configService.get('COOKIE_SAME_SITE')}`;
+    // set cookie for 15 minutes
+    const accessTokenCookie = `Authentication=${accessToken}; HttpOnly; Path=/; Max-Age=900; SameSite=${this.configService.get(
+      'COOKIE_SAME_SITE',
+    )}`;
 
     return {
       accessToken,
@@ -75,9 +76,10 @@ export class AuthService {
       expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_TIME'),
     });
 
-    const refreshTokenCookie = `Refresh=${refreshToken}; HttpOnly; Path=/; Max-Age=${this.configService.get(
-      'JWT_REFRESH_TOKEN_EXPIRES_TIME',
-    )}; SameSite=${this.configService.get('COOKIE_SAME_SITE')}`;
+    // set cookie for 3 days
+    const refreshTokenCookie = `Refresh=${refreshToken}; HttpOnly; Path=/; Max-Age=259200; SameSite=${this.configService.get(
+      'COOKIE_SAME_SITE',
+    )}`;
 
     return {
       refreshToken,
