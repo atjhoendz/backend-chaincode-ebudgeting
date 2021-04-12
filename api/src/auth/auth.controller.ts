@@ -49,7 +49,7 @@ export class AuthController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards()
   @Post('logout')
   async logout(@Res() res: Response) {
     res.setHeader('Set-Cookie', this.authService.getCookieForLogOut());
