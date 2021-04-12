@@ -20,10 +20,14 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   // Enable CORS
-  const configService = new ConfigService();
+  const originVal =
+    new ConfigService().get('NODE_ENV') == 'prod'
+      ? /atjhoendz\.me/
+      : 'http://localhost:8080';
+
   app.enableCors({
     credentials: true,
-    origin: configService.get('CORS_ORIGIN') || true,
+    origin: originVal,
   });
 
   // Prefix

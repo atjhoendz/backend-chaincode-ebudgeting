@@ -54,9 +54,7 @@ export class AuthService {
     });
 
     // set cookie for 15 minutes
-    const accessTokenCookie = `Authentication=${accessToken}; HttpOnly; Path=/; Max-Age=900; SameSite=${this.configService.get(
-      'COOKIE_SAME_SITE',
-    )}`;
+    const accessTokenCookie = `Authentication=${accessToken}; HttpOnly; Path=/; Max-Age=900; SameSite=Strict`;
 
     return {
       accessToken,
@@ -77,9 +75,7 @@ export class AuthService {
     });
 
     // set cookie for 3 days
-    const refreshTokenCookie = `Refresh=${refreshToken}; HttpOnly; Path=/; Max-Age=259200; SameSite=${this.configService.get(
-      'COOKIE_SAME_SITE',
-    )}`;
+    const refreshTokenCookie = `Refresh=${refreshToken}; HttpOnly; Path=/; Max-Age=259200; SameSite=Strict`;
 
     return {
       refreshToken,
