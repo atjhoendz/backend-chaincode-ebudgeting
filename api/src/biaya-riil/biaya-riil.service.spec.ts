@@ -19,6 +19,7 @@ const mockData: BiayaRiilDTO = {
   bukti: 'Ada',
   asal: 'Bandung',
   tujuan: 'Jakarta',
+  nama_lembaga: 'FMIPA',
 };
 
 const mockState = {
