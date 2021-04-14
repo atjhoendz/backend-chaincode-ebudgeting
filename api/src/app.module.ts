@@ -13,6 +13,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PemohonModule } from './pemohon/pemohon.module';
 import { EstimasiModule } from './estimasi/estimasi.module';
 import { BiayaRiilModule } from './biaya-riil/biaya-riil.module';
+import { PerbandinganBiayaModule } from './perbandingan-biaya/perbandingan-biaya.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -34,6 +35,7 @@ import configuration from './config/configuration';
     PemohonModule,
     EstimasiModule,
     BiayaRiilModule,
+    PerbandinganBiayaModule,
   ],
 })
 export class AppModule {
