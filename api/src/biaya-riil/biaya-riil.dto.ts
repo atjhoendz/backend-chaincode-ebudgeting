@@ -68,11 +68,27 @@ export class BiayaRiilDTO {
   })
   tujuan: string;
 
-  @IsString()
   @ApiProperty({
-    example: 'maman',
+    example: {
+      alasan_ditolak: '',
+      bukti_spd: 'Ada',
+      asal: 'Bandung',
+      docType: 'pemohon',
+      golongan: 'golongan',
+      jabatan: 'contohJabatan',
+      key: 'alskaaslaks-asaksjdf-asa',
+      lama: '2 hari',
+      maksud_perjalanan: 'pekerjaan',
+      nama: 'armando',
+      nama_lembaga: 'FMIPA',
+      nip: '124890568467229187',
+      nomor_spd: 'nomorspd2012012',
+      status_berkas: 'BIRO AUPK',
+      status_spd: 'Diterima',
+      tujuan: 'Jakarta',
+    },
   })
-  nama_pemohon: string;
+  data_pemohon: any;
 
   @IsString()
   @ApiProperty({
