@@ -10,12 +10,6 @@ export class EstimasiDTO {
 
   @IsString()
   @ApiProperty({
-    example: 'nama_pemohon',
-  })
-  nama_pemohon: string;
-
-  @IsString()
-  @ApiProperty({
     example: 'FMIPA',
   })
   nama_lembaga: string;
@@ -75,10 +69,25 @@ export class EstimasiDTO {
   })
   total: string;
 
-  @IsString()
-  @IsOptional()
   @ApiProperty({
-    example: 'status',
+    example: {
+      alasan_ditolak: '',
+      bukti_spd: 'Ada',
+      asal: 'Bandung',
+      docType: 'pemohon',
+      golongan: 'golongan',
+      jabatan: 'contohJabatan',
+      key: 'alskaaslaks-asaksjdf-asa',
+      lama: '2 hari',
+      maksud_perjalanan: 'pekerjaan',
+      nama: 'armando',
+      nama_lembaga: 'FMIPA',
+      nip: '124890568467229187',
+      nomor_spd: 'nomorspd2012012',
+      status_berkas: 'BIRO AUPK',
+      status_spd: 'Diterima',
+      tujuan: 'Jakarta',
+    },
   })
-  status: string;
+  data_pemohon: any;
 }
