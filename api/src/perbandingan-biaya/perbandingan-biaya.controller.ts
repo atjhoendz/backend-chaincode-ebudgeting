@@ -20,10 +20,10 @@ export class PerbandinganBiayaController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get('biaya-riil/:nama')
-  async getDataBiayaRiilByNamaPemohon(@Param('nama') nama: string) {
-    const result = await this.perbandinganBiayaService.getDataBiayaRiilByNamaPemohon(
-      nama,
+  @Get('biaya-riil/:key')
+  async getDataBiayaRiilByNamaPemohon(@Param('key') key: string) {
+    const result = await this.perbandinganBiayaService.getDataBiayaRiilByKeyPemohon(
+      key,
     );
 
     if (Object.keys(result).length) {

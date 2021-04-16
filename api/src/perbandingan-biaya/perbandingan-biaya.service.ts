@@ -6,7 +6,7 @@ import { HlfConfig } from 'src/chaincode-service/hlfConfig';
 export class PerbandinganBiayaService {
   constructor(private hlfConfig: HlfConfig, private appUtil: AppUtil) {}
 
-  async getDataBiayaRiilByNamaPemohon(nama: string) {
+  async getDataBiayaRiilByKeyPemohon(key: string) {
     try {
       const dataBiayaRiil = await this.hlfConfig.contract.evaluateTransaction(
         'getByType',
@@ -15,13 +15,11 @@ export class PerbandinganBiayaService {
 
       const dataBiayaRiilJSON = this.appUtil.prettyJSONString(dataBiayaRiil);
 
-      const filteredDataByNama = JSON.parse(dataBiayaRiilJSON).filter(
-        (item) => {
-          return item.Record.nama_pemohon == nama;
-        },
-      );
+      const filteredDataByKey = JSON.parse(dataBiayaRiilJSON).filter((item) => {
+        return item.Record.data_pemohon.key == key;
+      });
 
-      return filteredDataByNama;
+      return filteredDataByKey;
     } catch (err) {
       throw err;
     }
@@ -57,11 +55,11 @@ export class PerbandinganBiayaService {
       );
 
       const filteredDataEstimasi = dataEstimasiJSON.filter((item) => {
-        return item.Record.nama_pemohon == dataPemohonJSON.nama;
+        return item.Record.data_pemohon.nama == dataPemohonJSON.nama;
       });
 
       const filteredDataBiayaRiil = dataBiayaRiilJSON.filter((item) => {
-        return item.Record.nama_pemohon == dataPemohonJSON.nama;
+        return item.Record.data_pemohon.nama == dataPemohonJSON.nama;
       });
 
       const responseData = {
