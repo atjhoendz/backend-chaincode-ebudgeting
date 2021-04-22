@@ -23,7 +23,7 @@ async function bootstrap() {
   const originVal =
     new ConfigService().get('NODE_ENV') == 'prod'
       ? /atjhoendz\.me/
-      : 'http://localhost:8080';
+      : ['http://localhost:8080', 'http://localhost:8081'];
 
   app.enableCors({
     credentials: true,
