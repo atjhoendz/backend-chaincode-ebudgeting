@@ -51,4 +51,41 @@ export class LembagaService {
 
     return this.appUtil.prettyJSONString(result);
   }
+
+  async getDataBiayaRiilByLembaga(key: string): Promise<Record<any, any>> {
+    try {
+      const dataLembaga = await this.findOne(key);
+
+      if (!Object.keys(JSON.parse(dataLembaga)).length) return {};
+
+      const namaLembaga = JSON.parse(dataLembaga).nama;
+
+      const dataBiayaRiil = await this.hlfConfig.contract.evaluateTransaction(
+        'getByType',
+        'biaya-riil',
+      );
+
+      const dataBiayaRiilJSON = await this.appUtil.prettyJSONString(
+        dataBiayaRiil,
+      );
+
+      const filteredData = JSON.parse(dataBiayaRiilJSON).filter((item) => {
+        return item.Record.nama_lembaga == namaLembaga;
+      });
+
+      const result = filteredData.map((item) => {
+        return {
+          nama_kegiatan: item.Record.data_pemohon.maksud_perjalanan,
+          total_biaya: item.Record.total,
+        };
+      });
+
+      return {
+        data_lembaga: JSON.parse(dataLembaga),
+        data_kegiatan: result,
+      };
+    } catch (err) {
+      throw err;
+    }
+  }
 }

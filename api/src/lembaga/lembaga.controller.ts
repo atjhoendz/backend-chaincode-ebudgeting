@@ -112,4 +112,21 @@ export class LembagaController {
 
     throw new NotFoundException(undefined, 'Data tidak ditemukan.');
   }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('biaya-riil/:key')
+  async getDataBiayaRiilByLembaga(@Param('key') key: string) {
+    const result = await this.lembagaService.getDataBiayaRiilByLembaga(key);
+
+    if (Object.keys(result).length) {
+      return this.responseHelper.wrapResponse(
+        true,
+        200,
+        result,
+        'Data berhasil didapatkan.',
+      );
+    }
+    throw new NotFoundException(undefined, 'Data tidak ditemukan');
+  }
 }
