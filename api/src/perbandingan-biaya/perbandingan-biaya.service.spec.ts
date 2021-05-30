@@ -30,7 +30,7 @@ const mockDataPemohon: PemohonDTO = {
 
 const mockDataBiayaRiil: BiayaRiilDTO = {
   docType: 'biaya-riil',
-  nama_pemohon: 'maman',
+  data_pemohon: 'maman',
   tanggal_berangkat: '10/05/2020',
   biaya: '10000000',
   banyak: '2',
@@ -46,7 +46,7 @@ const mockDataBiayaRiil: BiayaRiilDTO = {
 
 const mockDataEstimasi: EstimasiDTO = {
   docType: 'estimasi',
-  nama_pemohon: 'nama pemohon',
+  data_pemohon: 'nama pemohon',
   nama_lembaga: 'FMIPA',
   jenis_pmk: 'jenispmk',
   kategori_pmk: 'kategoripmk',
@@ -57,8 +57,8 @@ const mockDataEstimasi: EstimasiDTO = {
   biaya: '10000000',
   banyak: '2',
   total: '20000000',
-  status: 'Sedang dalam pelaksanaan',
 };
+
 const mockStateBiayaRiil = {
   Key: expect.any(String),
   Record: mockDataBiayaRiil,

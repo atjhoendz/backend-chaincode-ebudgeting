@@ -8,7 +8,7 @@ import { BiayaRiilDTO } from './biaya-riil.dto';
 
 const mockData: BiayaRiilDTO = {
   docType: 'biaya-riil',
-  nama_pemohon: 'maman',
+  data_pemohon: 'maman',
   tanggal_berangkat: '10/05/2020',
   biaya: '10000000',
   banyak: '2',

@@ -8,7 +8,7 @@ import { EstimasiDTO } from './estimasi.dto';
 
 const mockData: EstimasiDTO = {
   docType: 'estimasi',
-  nama_pemohon: 'nama pemohon',
+  data_pemohon: 'nama pemohon',
   nama_lembaga: 'FMIPA',
   jenis_pmk: 'jenispmk',
   kategori_pmk: 'kategoripmk',
@@ -19,7 +19,6 @@ const mockData: EstimasiDTO = {
   biaya: '10000000',
   banyak: '2',
   total: '20000000',
-  status: 'Sedang dalam pelaksanaan',
 };
 
 const mockState = {
