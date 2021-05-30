@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { AppUtil } from 'src/chaincode-service/appUtil.service';
 import { HlfConfig } from 'src/chaincode-service/hlfConfig';
 import { UserDto } from './user.dto';
@@ -35,6 +41,7 @@ export class UserService {
   }
 
   async findOne(key: string) {
+    if (!key) throw new BadRequestException('Key is required');
     const result = await this.hlfConfig.contract.evaluateTransaction(
       'getByKey',
       key,
@@ -43,6 +50,9 @@ export class UserService {
   }
 
   async findByQuery(key: string, value: string) {
+    if (!key || !value)
+      throw new BadRequestException('Key or Value is cannot be empty');
+
     const query = JSON.stringify({
       [key]: value,
     });
@@ -56,6 +66,9 @@ export class UserService {
   }
 
   async update(key: string, userDto: UserDto) {
+    if (!key || !userDto)
+      throw new BadRequestException('Key or user data cannot be empty');
+
     const result = await this.hlfConfig.contract.submitTransaction(
       'updateByKey',
       key,
@@ -72,11 +85,7 @@ export class UserService {
       throw new Error('Data tidak ditemukan.');
     }
 
-    try {
-      dataDB = JSON.parse(dataDB);
-    } catch (err) {
-      console.log(err);
-    }
+    dataDB = JSON.parse(dataDB);
 
     try {
       const hashedPassword = await bcrypt.hash(updatePwdDTO.password, 10);
@@ -87,7 +96,7 @@ export class UserService {
 
       return this.appUtil.prettyJSONString(result);
     } catch (err) {
-      console.log(err);
+      throw new InternalServerErrorException(err.message);
     }
   }
 
