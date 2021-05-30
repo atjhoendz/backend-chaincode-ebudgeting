@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppUtil } from 'src/chaincode-service/appUtil.service';
-import { ResponseHelper } from 'src/helper/response.helper';
-import { MockContract } from '../../test/mockService/mockContract';
-import { HlfConfig } from '../../test/mockService/mockHlfConfig';
-import { UserDto } from './user.dto';
 import { UserService } from './user.service';
+import { ResponseHelper } from '../helper/response.helper';
+import { HlfConfig } from '../chaincode-service/hlfConfig';
+import { AppUtil } from '../chaincode-service/appUtil.service';
+import * as bcrypt from 'bcrypt';
+import { UserDto } from './user.dto';
 
 const mockData: UserDto = {
   docType: 'user',
@@ -16,21 +16,36 @@ const mockData: UserDto = {
 };
 
 const mockState = {
-  Key: expect.any(String),
+  Key: 'thisiskey',
   Record: mockData,
 };
 
+jest.mock('bcrypt');
+
 describe('UserService', () => {
   let service: UserService;
+  let bcryptHash: jest.Mock;
+
+  const mockedHlfConfig = {
+    contract: {
+      submitTransaction: jest.fn().mockResolvedValue(mockData),
+      evaluateTransaction: jest.fn().mockResolvedValue(mockData),
+    },
+  };
 
   beforeEach(async () => {
+    bcryptHash = jest.fn();
+    (bcrypt.hash as jest.Mock) = bcryptHash;
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
-        AppUtil,
-        HlfConfig,
-        MockContract,
         ResponseHelper,
+        AppUtil,
+        {
+          provide: HlfConfig,
+          useValue: mockedHlfConfig,
+        },
       ],
     }).compile();
 
@@ -41,84 +56,230 @@ describe('UserService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('Find all data', () => {
-    it('should return empty array for empty data', async () => {
-      const result = await service.findAll();
-
-      expect(result).toEqual('[]');
+  describe('Create a user', () => {
+    beforeEach(() => {
+      bcryptHash.mockResolvedValue('bcryptVal');
+      mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
+        Buffer.from(String(true), 'utf-8'),
+      );
+    });
+    it('should return true if new user successfully created', async () => {
+      const createdUser = await service.create(mockData);
+      expect(JSON.parse(createdUser)).toBeTruthy();
     });
 
-    it('should return array of json object if data exist', async () => {
-      await service.create(mockData);
-
-      const result = await service.findAll();
-
-      expect(JSON.parse(result)[0]).toEqual(mockState);
-    });
-  });
-
-  describe('Add a data', () => {
-    it('should return a message if success', async () => {
-      const result = await service.create(mockData);
-
-      expect(result).toEqual('Data berhasil ditambahkan');
-    });
-  });
-
-  describe('Find spesific data', () => {
-    it('should return object if data is exist', async () => {
-      await service.create(mockData);
-      const results = await service.findAll();
-
-      const key = JSON.parse(results)[0].Key;
-
-      const result = await service.findOne(key);
-
-      expect(JSON.parse(result)).toEqual(mockData);
-    });
-
-    it('should return msg if data is not exist', async () => {
-      const result = await service.findOne(mockState.Key);
-
-      expect(result).toEqual('Data tidak tersedia');
+    describe('If bcrypt error on hash', () => {
+      beforeEach(() => {
+        bcryptHash.mockRejectedValue('Something wrong');
+      });
+      it('should throw an error exception', async () => {
+        await expect(service.create(mockData)).rejects.toThrowError(
+          'Hash Password Error: Something wrong',
+        );
+      });
     });
   });
 
-  describe('Update a data', () => {
-    it('should return true msg if update succeed', async () => {
-      await service.create(mockData);
-      const results = await service.findAll();
-
-      const key = JSON.parse(results)[0].Key;
-
-      const result = await service.update(key, mockData);
-
-      expect(result).toEqual('Data berhasil diperbarui');
+  describe('Find All User Data', () => {
+    const arrOfUser: Array<Record<string, any>> = [];
+    beforeEach(() => {
+      arrOfUser.push(mockState);
+      const jsonString = JSON.stringify(arrOfUser);
+      const dataInBuffer = Buffer.from(jsonString, 'utf-8');
+      mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+        dataInBuffer,
+      );
+    });
+    it('should return array of state data', async () => {
+      const fetchedUser = await service.findAll();
+      expect(JSON.parse(fetchedUser)).toEqual(arrOfUser);
     });
 
-    it('should return false msg if data is not exist', async () => {
-      const result = await service.update(mockState.Key, mockData);
-
-      expect(result).toEqual('Data tidak tersedia');
+    describe('If User Data Is Empty', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify([]), 'utf-8'),
+        );
+      });
+      it('should return an empty array', async () => {
+        const fetchedUser = await service.findAll();
+        expect(JSON.parse(fetchedUser)).toEqual([]);
+      });
     });
   });
 
-  describe('Delete a data', () => {
-    it('should return true msg if delete succeed', async () => {
-      await service.create(mockData);
-      const results = await service.findAll();
-
-      const key = JSON.parse(results)[0].Key;
-
-      const result = await service.remove(key);
-
-      expect(result).toEqual('Data berhasil dihapus');
+  describe('Find One User by Key', () => {
+    beforeEach(() => {
+      mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+        Buffer.from(JSON.stringify(mockData), 'utf-8'),
+      );
+    });
+    it('should return a user data', async () => {
+      const fetchedUser = await service.findOne(mockState.Key);
+      expect(JSON.parse(fetchedUser)).toEqual(mockData);
     });
 
-    it('should return false msg if data is not exist', async () => {
-      const result = await service.remove(mockState.Key);
+    describe('If user is not exist', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify({}), 'utf-8'),
+        );
+      });
+      it('should return empty object', async () => {
+        const fetchedUser = await service.findOne(mockState.Key);
+        expect(JSON.parse(fetchedUser)).toEqual({});
+      });
+    });
 
-      expect(result).toEqual('Data tidak tersedia');
+    describe('If key is Empty', () => {
+      it('should throw an exception', async () => {
+        await expect(service.findOne('')).rejects.toThrowError(
+          'Key is required',
+        );
+      });
+    });
+  });
+
+  describe('Find By Query', () => {
+    beforeEach(() => {
+      mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+        Buffer.from(JSON.stringify(mockData), 'utf-8'),
+      );
+    });
+    it('should return user data', async () => {
+      const fetchedUser = await service.findByQuery(
+        'username',
+        mockData.username,
+      );
+      expect(JSON.parse(fetchedUser)).toEqual(mockData);
+    });
+
+    describe('If user data is not exist', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify({}), 'utf-8'),
+        );
+      });
+      it('should return empty object', async () => {
+        const fetchedUser = await service.findByQuery(
+          'username',
+          mockData.username,
+        );
+        expect(JSON.parse(fetchedUser)).toEqual({});
+      });
+    });
+
+    describe('If key or value is empty', () => {
+      it('should throw an exception', async () => {
+        await expect(
+          service.findByQuery(undefined, undefined),
+        ).rejects.toThrowError('Key or Value is cannot be empty');
+      });
+    });
+  });
+
+  describe('Update User Data', () => {
+    describe('If Successfully Updated', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(true), 'utf-8'),
+        );
+      });
+      it('should return true', async () => {
+        const result = await service.update(mockState.Key, mockData);
+        expect(JSON.parse(result)).toEqual(true);
+      });
+    });
+
+    describe('If user is not exist', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(false), 'utf-8'),
+        );
+      });
+      it('should return false', async () => {
+        const result = await service.update(mockState.Key, mockData);
+        expect(JSON.parse(result)).toEqual(false);
+      });
+    });
+
+    describe('If Key or NewData value is empty', () => {
+      it('should throw an exception', async () => {
+        await expect(service.update(undefined, undefined)).rejects.toThrowError(
+          'Key or user data cannot be empty',
+        );
+      });
+    });
+  });
+
+  describe('Update User Password', () => {
+    describe('If Successfully Updated', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(mockData), 'utf-8'),
+        );
+        mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(true), 'utf-8'),
+        );
+        bcryptHash.mockReturnValue('bcryptVal');
+      });
+      it('should return true', async () => {
+        const result = await service.updatePassword(mockState.Key, mockData);
+        expect(JSON.parse(result)).toEqual(true);
+      });
+    });
+
+    describe('If User Is Not Exist', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify({}), 'utf-8'),
+        );
+      });
+      it('should throw an exception', async () => {
+        await expect(
+          service.updatePassword(mockState.Key, mockData),
+        ).rejects.toThrowError('Data tidak ditemukan');
+      });
+    });
+
+    describe('If Error On Update', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(mockData), 'utf-8'),
+        );
+        bcryptHash.mockRejectedValue(new Error('Error something gone wrong'));
+      });
+      it('should throw an exception', async () => {
+        await expect(
+          service.updatePassword(mockState.Key, mockData),
+        ).rejects.toThrowError('Error something gone wrong');
+      });
+    });
+  });
+
+  describe('Remove a User', () => {
+    describe('If Successfully Removed', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(true), 'utf-8'),
+        );
+      });
+      it('should return true', async () => {
+        const result = await service.remove(mockState.Key);
+        expect(JSON.parse(result)).toEqual(true);
+      });
+    });
+
+    describe('If User is Not Exist', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(false), 'utf-8'),
+        );
+      });
+      it('should return false', async () => {
+        const result = await service.remove(mockState.Key);
+        expect(JSON.parse(result)).toEqual(false);
+      });
     });
   });
 });
