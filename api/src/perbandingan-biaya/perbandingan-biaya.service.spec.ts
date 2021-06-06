@@ -1,14 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BiayaRiilDTO } from 'src/biaya-riil/biaya-riil.dto';
-import { BiayaRiilService } from 'src/biaya-riil/biaya-riil.service';
 import { AppUtil } from 'src/chaincode-service/appUtil.service';
 import { EstimasiDTO } from 'src/estimasi/estimasi.dto';
 import { ResponseHelper } from 'src/helper/response.helper';
 import { PemohonDTO } from 'src/pemohon/pemohon.dto';
-import { PemohonService } from 'src/pemohon/pemohon.service';
-import { MockContract } from '../../test/mockService/mockContract';
-import { HlfConfig } from '../../test/mockService/mockHlfConfig';
 import { PerbandinganBiayaService } from './perbandingan-biaya.service';
+import { HlfConfig } from '../chaincode-service/hlfConfig';
+import { mockedHlfConfig } from '../../test/mockService/hlfConfig.mock';
 
 const mockDataPemohon: PemohonDTO = {
   docType: 'pemohon',
@@ -28,9 +26,14 @@ const mockDataPemohon: PemohonDTO = {
   nama_lembaga: 'FMIPA',
 };
 
+const mockStatePemohon = {
+  key: 'keypemohon',
+  ...mockDataPemohon,
+};
+
 const mockDataBiayaRiil: BiayaRiilDTO = {
   docType: 'biaya-riil',
-  data_pemohon: 'maman',
+  data_pemohon: mockStatePemohon,
   tanggal_berangkat: '10/05/2020',
   biaya: '10000000',
   banyak: '2',
@@ -46,7 +49,7 @@ const mockDataBiayaRiil: BiayaRiilDTO = {
 
 const mockDataEstimasi: EstimasiDTO = {
   docType: 'estimasi',
-  data_pemohon: 'nama pemohon',
+  data_pemohon: mockDataPemohon,
   nama_lembaga: 'FMIPA',
   jenis_pmk: 'jenispmk',
   kategori_pmk: 'kategoripmk',
@@ -60,8 +63,13 @@ const mockDataEstimasi: EstimasiDTO = {
 };
 
 const mockStateBiayaRiil = {
-  Key: expect.any(String),
+  Key: 'thisisakey',
   Record: mockDataBiayaRiil,
+};
+
+const mockStateBiayaEstimasi = {
+  Key: 'thisisakey',
+  Record: mockDataEstimasi,
 };
 
 describe('PerbandinganBiayaService', () => {
@@ -72,10 +80,12 @@ describe('PerbandinganBiayaService', () => {
       {
         providers: [
           PerbandinganBiayaService,
-          HlfConfig,
-          MockContract,
           AppUtil,
           ResponseHelper,
+          {
+            provide: HlfConfig,
+            useValue: mockedHlfConfig,
+          },
         ],
       },
     ).compile();
@@ -89,28 +99,86 @@ describe('PerbandinganBiayaService', () => {
     expect(perbandinganBiayaService).toBeDefined();
   });
 
-  describe('Get data biaya riil by nama pemohon', () => {
-    it('should return empty array if data is not exist', async () => {
-      const result = await perbandinganBiayaService.getDataBiayaRiilByNamaPemohon(
-        'akajslkj',
-      );
+  describe('Get data biaya riil by key pemohon', () => {
+    describe('If data is exist', () => {
+      const arrData: Array<any> = [];
 
-      expect(result).toHaveLength(0);
-    });
+      beforeEach(() => {
+        arrData.push(mockStateBiayaRiil);
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(arrData), 'utf-8'),
+        );
+      });
+      it('should return an array', async () => {
+        const result = await perbandinganBiayaService.getDataBiayaRiilByKeyPemohon(
+          mockStatePemohon.key,
+        );
+        expect(result).toEqual(arrData);
+        expect(result).toHaveLength(1);
+      });
 
-    it('should return array of json object if data is exist', async () => {
-      await perbandinganBiayaService.create(mockDataBiayaRiil);
-
-      const result = await perbandinganBiayaService.getDataBiayaRiilByNamaPemohon(
-        mockDataPemohon.nama,
-      );
-
-      expect(result).toHaveLength(1);
-      expect(result[0]).toEqual(mockStateBiayaRiil);
+      it('should return an empty array if data is not exist', async () => {
+        const result = await perbandinganBiayaService.getDataBiayaRiilByKeyPemohon(
+          'randomkey',
+        );
+        expect(result).toEqual([]);
+        expect(result).toHaveLength(0);
+      });
     });
   });
 
-  describe('Get data perbandingan', () => {
+  describe('Get Data Perbandingan', () => {
+    describe('If Data is Exist', () => {
+      const arrBiayaRiil: Array<any> = [];
+      const arrEstimasi: Array<any> = [];
+
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockImplementation(
+          (name: string, key: string) => {
+            switch (name) {
+              case 'getByKey':
+                return Buffer.from(JSON.stringify(mockDataPemohon), 'utf-8');
+              case 'getByType':
+                if (key == 'biaya-riil') {
+                  arrBiayaRiil.push(mockStateBiayaRiil);
+                  return Buffer.from(JSON.stringify(arrBiayaRiil), 'utf-8');
+                }
+                if (key == 'estimasi') {
+                  arrEstimasi.push(mockStateBiayaEstimasi);
+                  return Buffer.from(JSON.stringify(arrEstimasi), 'utf-8');
+                }
+                break;
+            }
+          },
+        );
+      });
+      it('should return object of data pemohon estimasi and biaya riil', async () => {
+        const result = await perbandinganBiayaService.getDataPerbandingan(
+          'keypemohon',
+        );
+        expect(result).toHaveProperty('dataPemohon');
+        expect(result).toHaveProperty('dataBiayaRiil');
+        expect(result).toHaveProperty('dataEstimasi');
+        expect(result).toEqual({
+          dataPemohon: mockDataPemohon,
+          dataEstimasi: arrEstimasi,
+          dataBiayaRiil: arrBiayaRiil,
+        });
+      });
+    });
+
+    describe('If Data is Not Exist', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify({}), 'utf-8'),
+        );
+      });
+      it('should throw an error', async () => {
+        await expect(
+          perbandinganBiayaService.getDataPerbandingan('keypemohon'),
+        ).rejects.toThrowError('Data tidak ditemukan.');
+      });
+    });
     // this error cause on mockContract result
     // it('should throw an error if data is not exist', async () => {
     //   const result = await perbandinganBiayaService.getDataPerbandingan(
@@ -119,19 +187,5 @@ describe('PerbandinganBiayaService', () => {
 
     //   expect(result).toThrowError('Data tidak ditemukan.');
     // });
-    it('should return an object if data is exist', async () => {
-      await perbandinganBiayaService.create(mockDataPemohon);
-      await perbandinganBiayaService.create(mockDataEstimasi);
-      await perbandinganBiayaService.create(mockDataBiayaRiil);
-
-      const dataPemohon = await perbandinganBiayaService.findAll();
-      const key = JSON.parse(dataPemohon)[0].Key;
-
-      const result = await perbandinganBiayaService.getDataPerbandingan(key);
-
-      expect(result).toHaveProperty('dataPemohon');
-      expect(result).toHaveProperty('dataBiayaRiil');
-      expect(result).toHaveProperty('dataEstimasi');
-    });
   });
 });
