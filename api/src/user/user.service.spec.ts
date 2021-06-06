@@ -5,6 +5,7 @@ import { HlfConfig } from '../chaincode-service/hlfConfig';
 import { AppUtil } from '../chaincode-service/appUtil.service';
 import * as bcrypt from 'bcrypt';
 import { UserDto } from './user.dto';
+import { mockedHlfConfig } from '../../test/mockService/hlfConfig.mock';
 
 const mockData: UserDto = {
   docType: 'user',
@@ -25,13 +26,6 @@ jest.mock('bcrypt');
 describe('UserService', () => {
   let service: UserService;
   let bcryptHash: jest.Mock;
-
-  const mockedHlfConfig = {
-    contract: {
-      submitTransaction: jest.fn().mockResolvedValue(mockData),
-      evaluateTransaction: jest.fn().mockResolvedValue(mockData),
-    },
-  };
 
   beforeEach(async () => {
     bcryptHash = jest.fn();
