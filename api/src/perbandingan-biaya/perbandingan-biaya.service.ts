@@ -73,23 +73,4 @@ export class PerbandinganBiayaService {
       throw err;
     }
   }
-
-  // for testing purpose only
-  async create(data: any) {
-    const result = await this.hlfConfig.contract.submitTransaction(
-      'create',
-      JSON.stringify(data),
-    );
-
-    return this.appUtil.prettyJSONString(result);
-  }
-
-  async findAll() {
-    const result = await this.hlfConfig.contract.evaluateTransaction(
-      'getByType',
-      'pemohon',
-    );
-
-    return this.appUtil.prettyJSONString(result);
-  }
 }
