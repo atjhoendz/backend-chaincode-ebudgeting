@@ -5,10 +5,35 @@ import { ResponseHelper } from 'src/helper/response.helper';
 import { BiayaRiilDTO } from './biaya-riil.dto';
 import { HlfConfig } from '../chaincode-service/hlfConfig';
 import { mockedHlfConfig } from '../../test/mockService/hlfConfig.mock';
+import { PemohonDTO } from '../pemohon/pemohon.dto';
+import { AnggaranDTO } from '../anggaran/anggaran.dto';
+
+const mockDataPemohon: PemohonDTO = {
+  docType: 'pemohon',
+  nomor_spd: 'nomorspd121241241',
+  nip: '1928410298120921',
+  nama: 'maman',
+  golongan: 'contohGolongan',
+  jabatan: 'contohJabatan',
+  maksud_perjalanan: 'pekerjaan',
+  asal: 'Bandung',
+  tujuan: 'Jakarta',
+  lama: '2 hari',
+  bukti_spd: 'Ada',
+  status_spd: 'Ada',
+  status_berkas: 'Diterima',
+  alasan_ditolak: '',
+  nama_lembaga: 'FMIPA',
+};
+
+const mockStatePemohon = {
+  key: 'keyPemohon',
+  ...mockDataPemohon,
+};
 
 const mockData: BiayaRiilDTO = {
   docType: 'biaya-riil',
-  data_pemohon: 'maman',
+  data_pemohon: mockStatePemohon,
   tanggal_berangkat: '10/05/2020',
   biaya: '10000000',
   banyak: '2',
@@ -25,6 +50,17 @@ const mockData: BiayaRiilDTO = {
 const mockState = {
   Key: 'keyState',
   Record: mockData,
+};
+
+const mockDataAnggaran: AnggaranDTO = {
+  docType: 'anggaran',
+  nama_lembaga: 'FMIPA',
+  sisa_anggaran: 25000000,
+};
+
+const mockStateAnggaran = {
+  Key: 'keyStateAnggaran',
+  Record: mockDataAnggaran,
 };
 
 describe('BiayaRiilService', () => {
@@ -53,8 +89,22 @@ describe('BiayaRiilService', () => {
   describe('Create a Data', () => {
     describe('If new data successfully created', () => {
       beforeEach(() => {
-        mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
-          Buffer.from(JSON.stringify(true), 'utf-8'),
+        const arrAnggaran: Array<any> = [];
+        arrAnggaran.push(mockStateAnggaran);
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(arrAnggaran), 'utf-8'),
+        );
+        mockedHlfConfig.contract.submitTransaction.mockImplementation(
+          (funcName: string, key = '', args: any = '') => {
+            switch (funcName) {
+              case 'create':
+                return Buffer.from(JSON.stringify(true), 'utf-8');
+              case 'updateByKey':
+                return Buffer.from(JSON.stringify(true), 'utf-8');
+              default:
+                return Buffer.from(JSON.stringify(false), 'utf-8');
+            }
+          },
         );
       });
       it('should return true', async () => {
@@ -63,15 +113,21 @@ describe('BiayaRiilService', () => {
       });
     });
 
-    describe('If any some problem with creating new data', () => {
+    describe('If total biaya riil is greater than budget allocation', () => {
       beforeEach(() => {
+        mockDataAnggaran.sisa_anggaran = 10000000;
+        const arrAnggaran: Array<any> = [];
+        arrAnggaran.push(mockStateAnggaran);
+
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(arrAnggaran), 'utf-8'),
+        );
         mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
           Buffer.from(JSON.stringify(false), 'utf-8'),
         );
       });
-      it('should return false', async () => {
-        const result = await service.create(mockData);
-        expect(JSON.parse(result)).toEqual(false);
+      it('should throw an error', async () => {
+        await expect(service.create(mockData)).rejects.toThrowError();
       });
     });
   });
