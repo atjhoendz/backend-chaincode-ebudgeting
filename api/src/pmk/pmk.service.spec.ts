@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppUtil } from 'src/chaincode-service/appUtil.service';
 import { ResponseHelper } from 'src/helper/response.helper';
-import { MockContract } from '../../test/mockService/mockContract';
-import { HlfConfig } from '../../test/mockService/mockHlfConfig';
 import { PmkDTO } from './pmk.dto';
 import { PmkService } from './pmk.service';
+import { HlfConfig } from '../chaincode-service/hlfConfig';
+import { mockedHlfConfig } from '../../test/mockService/hlfConfig.mock';
 
 const mockData: PmkDTO = {
   docType: 'pmk',
@@ -23,7 +23,7 @@ const mockData: PmkDTO = {
 };
 
 const mockState = {
-  Key: expect.any(String),
+  Key: 'keyState',
   Record: mockData,
 };
 
@@ -32,7 +32,15 @@ describe('PmkService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PmkService, HlfConfig, MockContract, AppUtil, ResponseHelper],
+      providers: [
+        PmkService,
+        AppUtil,
+        ResponseHelper,
+        {
+          provide: HlfConfig,
+          useValue: mockedHlfConfig,
+        },
+      ],
     }).compile();
 
     service = module.get<PmkService>(PmkService);
@@ -42,84 +50,158 @@ describe('PmkService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('Find all data', () => {
-    it('should return empty array for empty data', async () => {
-      const result = await service.findAll();
-
-      expect(result).toEqual('[]');
+  describe('Create a Data', () => {
+    describe('If new data successfully created', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(true), 'utf-8'),
+        );
+      });
+      it('should return true', async () => {
+        const result = await service.create(mockData);
+        expect(JSON.parse(result)).toEqual(true);
+      });
     });
 
-    it('should return array of json object if data exist', async () => {
-      await service.create(mockData);
-
-      const result = await service.findAll();
-
-      expect(JSON.parse(result)[0]).toEqual(mockState);
-    });
-  });
-
-  describe('Add a data', () => {
-    it('should return a message if success', async () => {
-      const result = await service.create(mockData);
-
-      expect(result).toEqual('Data berhasil ditambahkan');
-    });
-  });
-
-  describe('Find spesific data', () => {
-    it('should return object if data is exist', async () => {
-      await service.create(mockData);
-      const results = await service.findAll();
-
-      const key = JSON.parse(results)[0].Key;
-
-      const result = await service.findOne(key);
-
-      expect(JSON.parse(result)).toEqual(mockData);
-    });
-
-    it('should return msg if data is not exist', async () => {
-      const result = await service.findOne(mockState.Key);
-
-      expect(result).toEqual('Data tidak tersedia');
+    describe('If something went wrong', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(false), 'utf-8'),
+        );
+      });
+      it('should return false', async () => {
+        const result = await service.create(mockData);
+        expect(JSON.parse(result)).toEqual(false);
+      });
     });
   });
 
-  describe('Update a data', () => {
-    it('should return true msg if update succeed', async () => {
-      await service.create(mockData);
-      const results = await service.findAll();
-
-      const key = JSON.parse(results)[0].Key;
-
-      const result = await service.update(key, mockData);
-
-      expect(result).toEqual('Data berhasil diperbarui');
+  describe('Find All Data', () => {
+    describe('If any data exist', () => {
+      const arrData: Array<any> = [mockState];
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(arrData), 'utf-8'),
+        );
+      });
+      it('should return an array of data', async () => {
+        const result = await service.findAll();
+        expect(JSON.parse(result)).toEqual(arrData);
+      });
     });
 
-    it('should return false msg if data is not exist', async () => {
-      const result = await service.update(mockState.Key, mockData);
-
-      expect(result).toEqual('Data tidak tersedia');
+    describe('If no existing data', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify([]), 'utf-8'),
+        );
+      });
+      it('should return an empty array', async () => {
+        const result = await service.findAll();
+        expect(JSON.parse(result)).toEqual([]);
+      });
     });
   });
 
-  describe('Delete a data', () => {
-    it('should return true msg if delete succeed', async () => {
-      await service.create(mockData);
-      const results = await service.findAll();
-
-      const key = JSON.parse(results)[0].Key;
-
-      const result = await service.remove(key);
-
-      expect(result).toEqual('Data berhasil dihapus');
+  describe('Find a Data', () => {
+    describe('If the data is exist', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(mockData), 'utf-8'),
+        );
+      });
+      it('should return an object of data', async () => {
+        const result = await service.findOne(mockState.Key);
+        expect(JSON.parse(result)).toEqual(mockData);
+      });
     });
 
-    it('should return false msg if data is not exist', async () => {
-      const result = await service.remove(mockState.Key);
+    describe('If the data is not exist', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify({}), 'utf-8'),
+        );
+      });
+      it('should return an empty object', async () => {
+        const result = await service.findOne(mockState.Key);
+        expect(JSON.parse(result)).toEqual({});
+      });
+    });
 
-      expect(result).toEqual('Data tidak tersedia');
+    describe('If key argument is empty', () => {
+      it('should throw an error', async () => {
+        await expect(service.findOne('')).rejects.toThrowError(
+          'Key argument is cannot be empty',
+        );
+      });
+    });
+  });
+
+  describe('Update a Data', () => {
+    describe('If data successfully updated', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(true), 'utf-8'),
+        );
+      });
+      it('should return true', async () => {
+        const result = await service.update(mockState.Key, mockData);
+        expect(JSON.parse(result)).toEqual(true);
+      });
+    });
+
+    describe('If something went wrong', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(false), 'utf-8'),
+        );
+      });
+      it('should return false', async () => {
+        const result = await service.update(mockState.Key, mockData);
+        expect(JSON.parse(result)).toEqual(false);
+      });
+    });
+
+    describe('If key argument is empty', () => {
+      it('should throw an error', async () => {
+        await expect(service.update('', mockData)).rejects.toThrowError(
+          'Key argument is cannot be empty',
+        );
+      });
+    });
+  });
+
+  describe('Remove a Data', () => {
+    describe('If data successfully removed', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(true), 'utf-8'),
+        );
+      });
+      it('should return true', async () => {
+        const result = await service.remove(mockState.Key);
+        expect(JSON.parse(result)).toEqual(true);
+      });
+    });
+
+    describe('If something went wrong', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.submitTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(false), 'utf-8'),
+        );
+      });
+      it('should return false', async () => {
+        const result = await service.remove(mockState.Key);
+        expect(JSON.parse(result)).toEqual(false);
+      });
+    });
+
+    describe('If key argument is empty', () => {
+      it('should throw an error', async () => {
+        await expect(service.remove('')).rejects.toThrowError(
+          'Key argument is cannot be empty',
+        );
+      });
     });
   });
 });
