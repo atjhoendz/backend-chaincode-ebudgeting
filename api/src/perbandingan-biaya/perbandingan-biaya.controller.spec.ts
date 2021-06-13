@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppUtil } from 'src/chaincode-service/appUtil.service';
+import { HlfConfig } from 'src/chaincode-service/hlfConfig';
 import { ResponseHelper } from 'src/helper/response.helper';
-import { MockContract } from '../../test/mockService/mockContract';
-import { HlfConfig } from '../../test/mockService/mockHlfConfig';
+import { mockedHlfConfig } from '../../test/mockService/hlfConfig.mock';
 import { PerbandinganBiayaController } from './perbandingan-biaya.controller';
 import { PerbandinganBiayaService } from './perbandingan-biaya.service';
 
@@ -14,10 +14,12 @@ describe('PerbandinganBiayaController', () => {
       controllers: [PerbandinganBiayaController],
       providers: [
         PerbandinganBiayaService,
-        HlfConfig,
-        MockContract,
         ResponseHelper,
         AppUtil,
+        {
+          provide: HlfConfig,
+          useValue: mockedHlfConfig,
+        },
       ],
     }).compile();
 

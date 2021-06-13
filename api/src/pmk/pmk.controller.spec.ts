@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppUtil } from 'src/chaincode-service/appUtil.service';
+import { HlfConfig } from 'src/chaincode-service/hlfConfig';
 import { ResponseHelper } from 'src/helper/response.helper';
-import { MockContract } from '../../test/mockService/mockContract';
-import { HlfConfig } from '../../test/mockService/mockHlfConfig';
+import { mockedHlfConfig } from '../../test/mockService/hlfConfig.mock';
 import { PmkController } from './pmk.controller';
 import { PmkService } from './pmk.service';
 
@@ -12,7 +12,15 @@ describe('PmkController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PmkController],
-      providers: [PmkService, HlfConfig, MockContract, AppUtil, ResponseHelper],
+      providers: [
+        PmkService,
+        AppUtil,
+        ResponseHelper,
+        {
+          provide: HlfConfig,
+          useValue: mockedHlfConfig,
+        },
+      ],
     }).compile();
 
     controller = module.get<PmkController>(PmkController);

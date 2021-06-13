@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppUtil } from 'src/chaincode-service/appUtil.service';
+import { HlfConfig } from 'src/chaincode-service/hlfConfig';
 import { ResponseHelper } from 'src/helper/response.helper';
-import { MockContract } from '../../test/mockService/mockContract';
-import { HlfConfig } from '../../test/mockService/mockHlfConfig';
+import { mockedHlfConfig } from '../../test/mockService/hlfConfig.mock';
 import { AnggaranController } from './anggaran.controller';
 import { AnggaranService } from './anggaran.service';
 
@@ -14,10 +14,12 @@ describe('AnggaranController', () => {
       controllers: [AnggaranController],
       providers: [
         AnggaranService,
-        HlfConfig,
-        MockContract,
         AppUtil,
         ResponseHelper,
+        {
+          provide: HlfConfig,
+          useValue: mockedHlfConfig,
+        },
       ],
     }).compile();
 

@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppUtil } from 'src/chaincode-service/appUtil.service';
+import { HlfConfig } from 'src/chaincode-service/hlfConfig';
 import { ResponseHelper } from 'src/helper/response.helper';
-import { MockContract } from '../../test/mockService/mockContract';
-import { HlfConfig } from '../../test/mockService/mockHlfConfig';
+import { mockedHlfConfig } from '../../test/mockService/hlfConfig.mock';
 import { PenomoranController } from './penomoran.controller';
 import { PenomoranService } from './penomoran.service';
 
@@ -14,10 +14,12 @@ describe('PenomoranController', () => {
       controllers: [PenomoranController],
       providers: [
         PenomoranService,
-        HlfConfig,
-        MockContract,
         AppUtil,
         ResponseHelper,
+        {
+          provide: HlfConfig,
+          useValue: mockedHlfConfig,
+        },
       ],
     }).compile();
 

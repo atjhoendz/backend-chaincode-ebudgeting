@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EstimasiController } from './estimasi.controller';
 import { AppUtil } from 'src/chaincode-service/appUtil.service';
 import { ResponseHelper } from 'src/helper/response.helper';
-import { MockContract } from '../../test/mockService/mockContract';
-import { HlfConfig } from '../../test/mockService/mockHlfConfig';
 import { EstimasiService } from './estimasi.service';
+import { HlfConfig } from 'src/chaincode-service/hlfConfig';
+import { mockedHlfConfig } from '../../test/mockService/hlfConfig.mock';
 
 describe('EstimasiController', () => {
   let controller: EstimasiController;
@@ -14,10 +14,12 @@ describe('EstimasiController', () => {
       controllers: [EstimasiController],
       providers: [
         EstimasiService,
-        HlfConfig,
-        MockContract,
         AppUtil,
         ResponseHelper,
+        {
+          provide: HlfConfig,
+          useValue: mockedHlfConfig,
+        },
       ],
     }).compile();
 

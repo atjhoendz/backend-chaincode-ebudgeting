@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LembagaController } from './lembaga.controller';
 import { AppUtil } from 'src/chaincode-service/appUtil.service';
-import { HlfConfig } from '../../test/mockService/mockHlfConfig';
-import { MockContract } from '../../test/mockService/mockContract';
 import { LembagaService } from './lembaga.service';
 import { ResponseHelper } from 'src/helper/response.helper';
+import { HlfConfig } from 'src/chaincode-service/hlfConfig';
+import { mockedHlfConfig } from '../../test/mockService/hlfConfig.mock';
 
 describe('LembagaController', () => {
   let controller: LembagaController;
@@ -14,10 +14,12 @@ describe('LembagaController', () => {
       controllers: [LembagaController],
       providers: [
         LembagaService,
-        HlfConfig,
         AppUtil,
-        MockContract,
         ResponseHelper,
+        {
+          provide: HlfConfig,
+          useValue: mockedHlfConfig,
+        },
       ],
     }).compile();
 

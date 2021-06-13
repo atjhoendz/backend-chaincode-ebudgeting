@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BiayaRiilController } from './biaya-riil.controller';
 import { AppUtil } from 'src/chaincode-service/appUtil.service';
 import { ResponseHelper } from 'src/helper/response.helper';
-import { MockContract } from '../../test/mockService/mockContract';
-import { HlfConfig } from '../../test/mockService/mockHlfConfig';
 import { BiayaRiilService } from './biaya-riil.service';
+import { HlfConfig } from 'src/chaincode-service/hlfConfig';
+import { mockedHlfConfig } from '../../test/mockService/hlfConfig.mock';
 
 describe('BiayaRiilController', () => {
   let controller: BiayaRiilController;
@@ -14,10 +14,12 @@ describe('BiayaRiilController', () => {
       controllers: [BiayaRiilController],
       providers: [
         BiayaRiilService,
-        HlfConfig,
-        MockContract,
         ResponseHelper,
         AppUtil,
+        {
+          provide: HlfConfig,
+          useValue: mockedHlfConfig,
+        },
       ],
     }).compile();
 
