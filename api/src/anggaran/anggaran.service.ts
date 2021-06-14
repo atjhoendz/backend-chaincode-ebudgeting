@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { AppUtil } from 'src/chaincode-service/appUtil.service';
 import { HlfConfig } from 'src/chaincode-service/hlfConfig';
 import { AnggaranDTO } from './anggaran.dto';
@@ -25,6 +25,8 @@ export class AnggaranService {
   }
 
   async findOne(key: string) {
+    if (!key) throw new BadRequestException('Key argument is cannot be empty');
+
     const result = await this.hlfConfig.contract.evaluateTransaction(
       'getByKey',
       key,
@@ -34,6 +36,8 @@ export class AnggaranService {
   }
 
   async update(key: string, anggaranDTO: AnggaranDTO) {
+    if (!key) throw new BadRequestException('Key argument is cannot be empty');
+
     const result = await this.hlfConfig.contract.submitTransaction(
       'updateByKey',
       key,
@@ -44,6 +48,8 @@ export class AnggaranService {
   }
 
   async remove(key: string) {
+    if (!key) throw new BadRequestException('Key argument is cannot be empty');
+
     const result = await this.hlfConfig.contract.submitTransaction(
       'deleteByKey',
       key,
