@@ -53,7 +53,7 @@ export class AuthService {
       expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRES_TIME'),
     });
 
-    // set cookie for 15 minutes
+    // set cookie for 1 hour
     const accessTokenCookie = `Authentication=${accessToken}; HttpOnly; Path=/; Max-Age=3600; SameSite=${this.configService.get<string>(
       'COOKIE_SAME_SITE',
     )}`;
