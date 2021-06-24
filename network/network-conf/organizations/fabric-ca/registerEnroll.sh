@@ -38,6 +38,7 @@ function createOrg1() {
   infoln "Register peer1"
   set -x
   fabric-ca-client register --caname ca-org1 --id.name peer1 --id.secret peer1pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/org1/tls-cert.pem
+  { set +x; } 2>/dev/null
 
   infoln "Register user"
   set -x

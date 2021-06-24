@@ -46,7 +46,7 @@ createAncorPeerTx() {
 }
 
 createChannel() {
-	setGlobals 1
+	setGlobals 0
 	# Poll in case the raft leader is not set yet
 	local rc=1
 	local COUNTER=1
@@ -66,8 +66,8 @@ createChannel() {
 
 # queryCommitted ORG
 joinChannel() {
-  ORG=$1
-  setGlobals $ORG $2
+  PEER=$1
+  setGlobals "$PEER"
 	local rc=1
 	local COUNTER=1
 	## Sometimes Join takes time, hence retry
@@ -81,12 +81,12 @@ joinChannel() {
 		COUNTER=$(expr $COUNTER + 1)
 	done
 	cat log.txt
-	verifyResult $res "After $MAX_RETRY attempts, peer0.org${ORG} has failed to join channel '$CHANNEL_NAME' "
+	verifyResult $res "After $MAX_RETRY attempts, peer${PEER}.org1 has failed to join channel '$CHANNEL_NAME' "
 }
 
 updateAnchorPeers() {
-  ORG=$1
-  setGlobals $ORG
+  PEER=$1
+  setGlobals "$PEER"
 	local rc=1
 	local COUNTER=1
 	## Sometimes Join takes time, hence retry
@@ -130,15 +130,14 @@ createChannel
 ## Join all the peers to the channel
 infoln "Join Org1 peers to the channel..."
 infoln "Joining peer0.."
-joinChannel 1 0
-# infoln "Joining peer1..."
-# joinChannel 1 1
+joinChannel 0
+
+infoln "Joining peer1..."
+joinChannel 1
 
 ## Set the anchor peers for each org in the channel
-# infoln "Updating anchor peers for org1..."
-# updateAnchorPeers 1
-# infoln "Updating anchor peers for org2..."
-# updateAnchorPeers 2
+infoln "Updating anchor peers for org1..."
+updateAnchorPeers 0
 
 successln "Channel successfully joined"
 
