@@ -21,7 +21,8 @@
 	"channels": {
 		"mychannel": {
 			"peers": {
-				"peer0.org1.example.com": {}
+				"peer0.org1.example.com": {},
+				"peer1.org1.example.com": {}
 			}
 		}
 	},
@@ -29,9 +30,9 @@
 		"Org1MSP": {
 			"mspid": "Org1MSP",
 			"adminPrivateKey": {
-				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/25bab72749869758fe8de702825789f12993f021e772a27920b7ef2b9e7ec695_sk"
+				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/b4ae1b367a4e12e7953605458252a35084852f911233b9c5d7d0779ad4e2e8ba_sk"
 			},
-			"peers": ["peer0.org1.example.com"],
+			"peers": ["peer0.org1.example.com", "peer1.org1.example.com"],
 			"signedCert": {
 				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/cert.pem"
 			}
@@ -43,6 +44,12 @@
 				"path": "/tmp/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
 			},
 			"url": "grpcs://peer0.org1.example.com:7051"
+		},
+		"peer1.org1.example.com": {
+			"tlsCACerts": {
+				"path": "/tmp/crypto/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt"
+			},
+			"url": "grpcs://peer1.org1.example.com:7051"
 		}
 	}
 }
