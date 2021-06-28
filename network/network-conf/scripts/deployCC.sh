@@ -196,13 +196,6 @@ approveForMyOrg() {
 # checkCommitReadiness VERSION PEER ORG
 checkCommitReadiness() {
   PEER=$1
-  # if [ $ORG -eq 1 ]; then
-  #   PEER=$2
-  #   shift 2
-  # else 
-  #   PEER=0
-  #   shift 1
-  # fi
   shift 1
   setGlobals "$PEER"
   infoln "Checking the commit readiness of the chaincode definition on peer${PEER}.org1 on channel '$CHANNEL_NAME'..."
@@ -348,7 +341,6 @@ queryInstalled 1
 
 ## approve the definition for peers on org1
 approveForMyOrg 0
-# approveForMyOrg 1
 
 ## check whether the chaincode definition is ready to be committed
 ## expect org1 on peer0 and peer1 to have approved  
