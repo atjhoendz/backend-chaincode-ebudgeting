@@ -11,8 +11,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
-import { ResponseHelper } from 'src/helper/response.helper';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+import { ResponseHelper } from '../helper/response.helper';
 import { EstimasiDTO } from './estimasi.dto';
 import { EstimasiService } from './estimasi.service';
 

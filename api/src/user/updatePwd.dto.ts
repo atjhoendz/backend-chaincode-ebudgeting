@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
-import { Role } from 'src/role/role.enum';
+import { Role } from '../role/role.enum';
 
 export class UpdatePwdDTO {
   @IsString()

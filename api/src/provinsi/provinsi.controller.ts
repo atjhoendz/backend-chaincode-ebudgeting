@@ -13,8 +13,8 @@ import {
 import { ProvinsiService } from './provinsi.service';
 import { ProvinsiDto } from './provinsi.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ResponseHelper } from 'src/helper/response.helper';
-import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { ResponseHelper } from '../helper/response.helper';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 
 @ApiTags('Provinsi')
 @Controller('provinsi')

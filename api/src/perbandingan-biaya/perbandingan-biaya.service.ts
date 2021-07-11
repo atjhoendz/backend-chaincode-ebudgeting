@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { AppUtil } from 'src/chaincode-service/appUtil.service';
-import { HlfConfig } from 'src/chaincode-service/hlfConfig';
+import { AppUtil } from '../chaincode-service/appUtil.service';
+import { HlfConfig } from '../chaincode-service/hlfConfig';
 
 @Injectable()
 export class PerbandinganBiayaService {

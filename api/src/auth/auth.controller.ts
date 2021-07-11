@@ -9,9 +9,9 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { Roles } from 'src/role/role.decorator';
-import { Role } from 'src/role/role.enum';
-import { RolesGuard } from 'src/role/roles.guard';
+import { Roles } from '../role/role.decorator';
+import { Role } from '../role/role.enum';
+import { RolesGuard } from '../role/roles.guard';
 import { AuthDTO } from './auth.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';

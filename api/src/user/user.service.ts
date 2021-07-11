@@ -5,8 +5,8 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { AppUtil } from 'src/chaincode-service/appUtil.service';
-import { HlfConfig } from 'src/chaincode-service/hlfConfig';
+import { AppUtil } from '../chaincode-service/appUtil.service';
+import { HlfConfig } from '../chaincode-service/hlfConfig';
 import { UserDto } from './user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdatePwdDTO } from './updatePwd.dto';

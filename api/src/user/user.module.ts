@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { ChainModule } from 'src/chaincode-service/chain.module';
-import { HlfConfig } from 'src/chaincode-service/hlfConfig';
-import { ResponseHelper } from 'src/helper/response.helper';
+import { ChainModule } from '../chaincode-service/chain.module';
+import { HlfConfig } from '../chaincode-service/hlfConfig';
+import { ResponseHelper } from '../helper/response.helper';
 
 @Module({
   controllers: [UserController],

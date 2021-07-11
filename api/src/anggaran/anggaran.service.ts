@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { AppUtil } from 'src/chaincode-service/appUtil.service';
-import { HlfConfig } from 'src/chaincode-service/hlfConfig';
+import { AppUtil } from '../chaincode-service/appUtil.service';
+import { HlfConfig } from '../chaincode-service/hlfConfig';
 import { AnggaranDTO } from './anggaran.dto';
 
 @Injectable()

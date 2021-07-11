@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { KategoriService } from './kategori.service';
 import { KategoriController } from './kategori.controller';
-import { HlfConfig } from 'src/chaincode-service/hlfConfig';
-import { ChainModule } from 'src/chaincode-service/chain.module';
-import { ResponseHelper } from 'src/helper/response.helper';
+import { HlfConfig } from '../chaincode-service/hlfConfig';
+import { ChainModule } from '../chaincode-service/chain.module';
+import { ResponseHelper } from '../helper/response.helper';
 
 @Module({
   controllers: [KategoriController],
