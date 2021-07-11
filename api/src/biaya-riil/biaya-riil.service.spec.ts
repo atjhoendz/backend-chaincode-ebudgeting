@@ -130,6 +130,17 @@ describe('BiayaRiilService', () => {
         await expect(service.create(mockData)).rejects.toThrowError();
       });
     });
+
+    describe('If nama lembaga is not found', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify([]), 'utf-8'),
+        );
+      });
+      it('should throw an error', async () => {
+        await expect(service.create(mockData)).rejects.toThrowError();
+      });
+    });
   });
 
   describe('Find All Data', () => {
@@ -190,6 +201,27 @@ describe('BiayaRiilService', () => {
         await expect(service.findOne('')).rejects.toThrowError(
           'Key argument cannot be empty',
         );
+      });
+    });
+  });
+
+  describe('Find By Query', () => {
+    describe('If argument of key or value is empty', () => {
+      it('should throw an exception', async () => {
+        await expect(service.findByQuery('', '')).rejects.toThrowError();
+      });
+    });
+
+    describe('If data is found', () => {
+      const arrData: Array<any> = [mockState];
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockResolvedValue(
+          Buffer.from(JSON.stringify(arrData), 'utf-8'),
+        );
+      });
+      it('should return array of data', async () => {
+        const result = await service.findByQuery('key', 'value');
+        expect(JSON.parse(result)).toEqual(arrData);
       });
     });
   });

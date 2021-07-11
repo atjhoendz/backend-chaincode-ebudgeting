@@ -22,7 +22,7 @@ export class AuthService {
 
     const isPassValid = await this.isPasswordValid(
       pass,
-      user[0]?.Record?.password,
+      user[0].Record.password,
     );
 
     if (isPassValid) {

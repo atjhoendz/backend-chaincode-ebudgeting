@@ -125,6 +125,19 @@ describe('PerbandinganBiayaService', () => {
         expect(result).toHaveLength(0);
       });
     });
+
+    describe('If any error', () => {
+      beforeEach(() => {
+        mockedHlfConfig.contract.evaluateTransaction.mockRejectedValue(
+          new Error('error'),
+        );
+      });
+      it('should throw an error', async () => {
+        await expect(
+          perbandinganBiayaService.getDataBiayaRiilByKeyPemohon('key'),
+        ).rejects.toThrowError();
+      });
+    });
   });
 
   describe('Get Data Perbandingan', () => {
