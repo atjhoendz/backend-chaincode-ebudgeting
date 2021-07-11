@@ -90,6 +90,16 @@
     "testEnvironment": "node",
     "moduleNameMapper": {
       "^src/(.*)$": "<rootDir>/$1"
-    }
+    },
+    "coveragePathIgnorePatterns": [
+      ".controller.ts",
+      ".module.ts",
+      "<rootDir>/chaincode-service",
+      "<rootDir>/helper",
+      "<rootDir>/main.ts",
+      ".guard.ts",
+      ".strategy.ts",
+      "<rootDir>/config"
+    ]
   }
 }
