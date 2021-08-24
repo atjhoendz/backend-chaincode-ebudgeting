@@ -22,7 +22,7 @@ async function bootstrap() {
   // Enable CORS
   const originVal =
     new ConfigService().get('NODE_ENV') == 'prod'
-      ? /atjhoendz\.me/
+      ? /netlify\.app/
       : ['http://localhost:8080', 'http://localhost:8081'];
 
   app.enableCors({
