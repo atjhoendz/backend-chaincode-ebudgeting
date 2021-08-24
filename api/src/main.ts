@@ -19,7 +19,7 @@ async function bootstrap() {
   // Global request validation
   app.useGlobalPipes(new ValidationPipe());
 
-  // Enable CORS
+  // Enable CORS and Whitelist
   const originVal =
     new ConfigService().get('NODE_ENV') == 'prod'
       ? /netlify\.app/
